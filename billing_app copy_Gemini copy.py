@@ -15,29 +15,34 @@ from PyQt6.QtGui import QPageSize, QPageLayout, QFont, QColor, QPalette
 import platform
 
 # ════════════════════════════════════════════════
-#  MINIMALIST WHITE THEME
+#  MODERN BLUE THEME
 # ════════════════════════════════════════════════
 BG        = "#f8f9fa"     # page background — very light grey
 BG_CARD   = "#ffffff"     # cards / panels
 BG_INPUT  = "#ffffff"     # input fields
-BG_HOVER  = "#f1f3f5"     # hover state — slightly darker grey
-ACCENT    = "#343a40"     # primary accent — dark grey for high contrast elements
-ACCENT_L  = "#495057"     # lighter grey for hover
-ACCENT_D  = "#343a4015"   # dim tint for backgrounds
+BG_HOVER  = "#e9ecef"     # hover state — slightly darker grey
+ACCENT    = "#007bff"     # primary accent — modern blue
+ACCENT_L  = "#0056b3"     # darker blue for hover/press
+ACCENT_D  = "#007bff1a"   # dim tint for backgrounds
 GREEN     = "#28a745"     # A clear, standard green
-GREEN_D   = "#28a74515"   # Tinted green
+GREEN_L   = "#218838"     # Darker green for hover/press
+GREEN_D   = "#28a7451a"   # Tinted green
 RED_C     = "#dc3545"     # A clear, standard red
-RED_D     = "#dc354515"
+RED_L     = "#c82333"     # Darker red for hover/press
+RED_D     = "#dc35451a"
 YELLOW    = "#ffc107"     # Standard warning yellow/orange
-YELLOW_D  = "#ffc10715"
+YELLOW_L  = "#e0a800"     # Darker yellow for hover/press
+YELLOW_D  = "#ffc1071a"
 TP        = "#212529"     # text primary — dark grey/black
 TM        = "#6c757d"     # text muted — standard grey
-BORDER    = "#dee2e6"     # border colour
-BORDER_L  = "#ced4da"
+WHITE_T   = "#f8f9fa"     # white text for dark backgrounds
+BORDER    = "#ced4da"     # border colour
+BORDER_L  = "#adb5bd"
 TOPBAR_BG = "#ffffff"
-ALT_ROW   = "#f8f9fa"     # Use the same as page background for simplicity
-NET_BG    = GREEN_D      # Use tinted green for the net amount card
-NET_BR    = GREEN        # Use green border for net amount card
+ALT_ROW   = "#f2f2f2"
+NET_BG    = GREEN_D
+NET_BR    = GREEN
+DARK_BG   = "#343a40"     # Dark background for the "below area"
 
 def T(key):
     m = {"BG_DARK":BG,"BG_CARD":BG_CARD,"BG_INPUT":BG_INPUT,"BG_HOVER":BG_HOVER,
@@ -80,7 +85,7 @@ QTabBar::tab {{
     transition: color 0.2s, background 0.2s, border 0.2s;
 }}
 QTabBar::tab:selected {{
-    color: {ACCENT_L};
+    color: {ACCENT};
     border-bottom: 2px solid {ACCENT};
     font-weight: 700;
     background: {ACCENT_D};
@@ -89,28 +94,35 @@ QTabBar::tab:hover:!selected {{
     color: {TP};
     background: {BG_HOVER};
 }}
-QLineEdit, QDoubleSpinBox, QSpinBox {{
+QLineEdit, QDoubleSpinBox, QSpinBox, QComboBox {{
     background: {BG_INPUT};
-    border: 1.5px solid {BORDER};
-    border-radius: 7px;
-    padding: 8px 12px;
+    border: 1px solid {BORDER};
+    border-radius: 8px;
+    padding: 9px 12px;
     color: {TP};
     font-size: 14px;
     selection-background-color: {ACCENT};
     min-height: 18px;
 }}
-QLineEdit:focus, QDoubleSpinBox:focus, QSpinBox:focus {{
+QLineEdit:focus, QDoubleSpinBox:focus, QSpinBox:focus, QComboBox:focus {{
     border: 1.5px solid {ACCENT};
-    background: {BG_CARD};
 }}
 QLineEdit:read-only {{
-    background: {BG};
+    background: {BG_HOVER};
     color: {TM};
-    border: 1.5px solid {BORDER};
-    border-radius: 7px;
+    border: 1px solid {BORDER};
 }}
 QDoubleSpinBox::up-button, QDoubleSpinBox::down-button,
 QSpinBox::up-button, QSpinBox::down-button {{ width: 0px; border: none; }}
+
+QComboBox::drop-down {{
+    border: none;
+    padding-right: 10px;
+}}
+QComboBox::down-arrow {{
+    image: url(./chevron-down.svg); /* Fallback, consider encoding */
+}}
+
 QTableWidget {{
     background: {BG_CARD};
     border: 1px solid {BORDER};
@@ -120,7 +132,7 @@ QTableWidget {{
     font-size: 14px;
     outline: none;
 }}
-QTableWidget::item {{ padding: 5px 8px; border: none; }}
+QTableWidget::item {{ padding: 6px 10px; border: none; }}
 QTableWidget::item:selected {{
     background: {ACCENT_D};
     color: {ACCENT};
@@ -135,7 +147,7 @@ QHeaderView::section {{
     letter-spacing: 1px;
     padding: 9px 8px;
     border: none;
-    border-bottom: 2px solid {ACCENT};
+    border-bottom: 2px solid {BORDER};
     border-right: 1px solid {BORDER};
     text-transform: uppercase;
 }}
@@ -145,57 +157,40 @@ QPushButton {{
     color: {TP};
     border: 1px solid {BORDER_L};
     border-radius: 8px;
-    padding: 8px 18px;
+    padding: 9px 20px;
     font-weight: 600;
     font-size: 14px;
     min-height: 16px;
 }}
 QPushButton:hover {{
     background: {BG_HOVER};
-    color: {ACCENT};
-    border-color: {ACCENT};
+    border-color: {ACCENT_L};
 }}
 QPushButton:pressed {{ background: {ACCENT_D}; border-color: {ACCENT}; }}
 QPushButton#accent {{
     background: {ACCENT};
     color: white;
     border: none;
-    padding: 9px 22px;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: 8px;
 }}
-QPushButton#accent:hover {{ background: {ACCENT_L}; color: white; }}
-QPushButton#green {{ /* Outline button */
-    background: {GREEN_D};
-    color: {GREEN};
-    border: 1px solid {GREEN};
-    padding: 9px 20px;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: 8px;
+QPushButton#accent:hover {{ background: {ACCENT_L}; }}
+QPushButton#green {{
+    background: {GREEN};
+    color: white;
+    border: none;
 }}
-QPushButton#green:hover {{ background: {GREEN}; color: white; }}
-QPushButton#red {{ /* Outline button */
-    background: {RED_D};
-    color: {RED_C};
-    border: 1px solid {RED_C};
-    border-radius: 7px;
-    padding: 7px 14px;
-    font-weight: 600;
-    font-size: 12px;
+QPushButton#green:hover {{ background: {GREEN_L}; }}
+QPushButton#red {{
+    background: {RED_C};
+    color: white;
+    border: none;
 }}
-QPushButton#red:hover {{ background: {RED_C}; color: white; }}
-QPushButton#yellow {{ /* Outline button */
-    background: {YELLOW_D};
-    color: {YELLOW};
-    border: 1px solid {YELLOW};
-    padding: 9px 20px;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: 8px;
+QPushButton#red:hover {{ background: {RED_L}; }}
+QPushButton#yellow {{
+    background: {YELLOW};
+    color: white;
+    border: none;
 }}
-QPushButton#yellow:hover {{ background: {YELLOW}; color: white; }}
+QPushButton#yellow:hover {{ background: {YELLOW_L}; }}
 QFrame#card {{
     background: {BG_CARD};
     border: 1px solid {BORDER};
@@ -206,14 +201,23 @@ QFrame#netcard {{
     border: 2px solid {NET_BR};
     border-radius: 12px;
 }}
-QFrame#statcard {{
-    background: {BG_CARD};
-    border: 1px solid {BORDER};
+QFrame#tcard {{
+    background: {DARK_BG};
+    border: 1px solid #495057;
     border-radius: 12px;
+}}
+QFrame#tcard QLabel {{
+    color: #f8f9fa;
+    background-color: transparent;
+}}
+QFrame#tcard QLineEdit {{
+    background-color: #495057;
+    color: {WHITE_T};
+    border-color: #6c757d;
 }}
 QFrame#topbar {{
     background: {TOPBAR_BG};
-    border-bottom: 2px solid {ACCENT};
+    border-bottom: 1px solid {BORDER};
 }}
 QFrame#divider_h {{
     background: {BORDER};
@@ -226,11 +230,11 @@ QFrame#divider_v {{
 QScrollArea {{ border: none; background: transparent; }}
 QScrollBar:vertical {{
     background: {BG};
-    width: 6px; border-radius: 3px;
+    width: 8px; border-radius: 4px;
 }}
 QScrollBar::handle:vertical {{
     background: {BORDER_L};
-    border-radius: 3px; min-height: 24px;
+    border-radius: 4px; min-height: 24px;
 }}
 QScrollBar::handle:vertical:hover {{ background: {ACCENT}; }}
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{ height: 0; }}
@@ -239,15 +243,15 @@ QStatusBar {{
     color: {TM};
     font-size: 11px;
     border-top: 1px solid {BORDER};
-    padding: 3px 16px;
+    padding: 4px 16px;
 }}
 QDialog {{ background: {BG}; color: {TP}; }}
-QDialogButtonBox QPushButton {{ min-width: 88px; padding: 8px 18px; }}
+QDialogButtonBox QPushButton {{ min-width: 90px; padding: 10px 20px; }}
 QAbstractItemView {{
     background: {BG_CARD};
     color: {TP};
     border: 1.5px solid {ACCENT};
-    border-radius: 7px;
+    border-radius: 8px;
     selection-background-color: {ACCENT};
     selection-color: {BG_CARD};
     font-size: 14px;
@@ -789,14 +793,15 @@ class BillingTab(QWidget):
             return w, inp
 
         w1, self.patient_edit  = _lfield("Patient Name", "Patient / Customer name")
-        w2, self.age_edit      = _lfield("Age",          "Age (yrs)",       60)
-        w3, self.gender_edit   = _lfield("Gender",       "M / F / Other",   80)
-        w4, self.phone_edit    = _lfield("Mobile",       "Phone number",   120)
-        w5, self.email_edit    = _lfield("Email",        "Email (opt.)",   160)
-        w6, self.date_edit     = _lfield("Date",         "DD-MM-YYYY",      95)
+        w2, self.age_edit      = _lfield("Age",          "Age (yrs)",        82)
+        w3, self.gender_edit   = _lfield("Gender",       "M / F / Other",   105)
+        w4, self.phone_edit    = _lfield("Mobile",       "Phone number",    148)
+        w5, self.email_edit    = _lfield("Email",        "Email (opt.)",    178)
+        w6, self.date_edit     = _lfield("Date",         "DD-MM-YYYY",      112)
         self.invoice_no = ""
 
-        pg.addWidget(w1, 3); pg.addWidget(w2); pg.addWidget(w3)
+        pg.addWidget(w1, 1)  # stretch — takes all remaining space
+        pg.addWidget(w2); pg.addWidget(w3)
         pg.addWidget(w4); pg.addWidget(w5); pg.addWidget(w6)
 
         # Address row
@@ -828,8 +833,8 @@ class BillingTab(QWidget):
         hh = self.table.horizontalHeader()
         hh.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         for col in [0,2,3,4]: hh.setSectionResizeMode(col, QHeaderView.ResizeMode.Fixed)
-        self.table.setColumnWidth(0,30); self.table.setColumnWidth(2,90)
-        self.table.setColumnWidth(3,50); self.table.setColumnWidth(4,90)
+        self.table.setColumnWidth(0,30); self.table.setColumnWidth(2,120)
+        self.table.setColumnWidth(3,70); self.table.setColumnWidth(4,115)
         self.table.setAlternatingRowColors(True)
         self.table.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -843,49 +848,66 @@ class BillingTab(QWidget):
         tcard = QFrame(); tcard.setObjectName("card")
         tg = QHBoxLayout(tcard); tg.setContentsMargins(14,8,14,8); tg.setSpacing(12)
 
-        def _tfield(label, fixed_w=90):
+        def _tfield(label, fixed_w=110):
             w = QWidget(); w.setStyleSheet("background:transparent")
-            vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(2)
+            vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(3)
             lbl = QLabel(label.upper())
-            lbl.setStyleSheet(f"color:{TM};font-size:11px;font-weight:700;letter-spacing:1px;background:transparent")
+            lbl.setStyleSheet(f"color:{TP};font-size:12px;font-weight:800;letter-spacing:0.8px;background:transparent")
             f = QLineEdit(); f.setReadOnly(True); f.setFixedWidth(fixed_w)
+            f.setStyleSheet(f"font-size:14px;font-weight:700;color:{TP};padding:8px 12px;")
             vl.addWidget(lbl); vl.addWidget(f)
             return w, f
 
-        def _efield(label, placeholder="", fixed_w=90):
+        def _efield(label, placeholder="", fixed_w=110):
             w = QWidget(); w.setStyleSheet("background:transparent")
-            vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(2)
+            vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(3)
             lbl = QLabel(label.upper())
-            lbl.setStyleSheet(f"color:{TM};font-size:11px;font-weight:700;letter-spacing:1px;background:transparent")
+            lbl.setStyleSheet(f"color:{TP};font-size:12px;font-weight:800;letter-spacing:0.8px;background:transparent")
             f = QLineEdit(); f.setPlaceholderText(placeholder); f.setFixedWidth(fixed_w)
+            f.setStyleSheet(f"font-size:14px;font-weight:700;color:{TP};padding:8px 12px;")
             vl.addWidget(lbl); vl.addWidget(f)
             return w, f
 
-        w_sub, self.subtotal_f = _tfield("Subtotal")
+        w_sub, self.subtotal_f = _tfield("Subtotal", 115)
 
         wd = QWidget(); wd.setStyleSheet("background:transparent")
         vld = QVBoxLayout(wd); vld.setContentsMargins(0,0,0,0); vld.setSpacing(2)
         lbl_d = QLabel("DISCOUNT %")
-        lbl_d.setStyleSheet(f"color:{TM};font-size:11px;font-weight:700;letter-spacing:1px;background:transparent")
-        self.disc_edit = QLineEdit("0"); self.disc_edit.setFixedWidth(55)
+        lbl_d.setStyleSheet(f"color:{TP};font-size:12px;font-weight:800;letter-spacing:0.8px;background:transparent")
+        self.disc_edit = QLineEdit("0"); self.disc_edit.setFixedWidth(75)
+        self.disc_edit.setStyleSheet(f"font-size:14px;font-weight:700;color:{TP};padding:8px 12px;")
         self.disc_edit.textChanged.connect(self._recalc)
         vld.addWidget(lbl_d); vld.addWidget(self.disc_edit)
 
-        w_da, self.disc_amt_f = _tfield("Disc. Amt", 75)
+        w_da, self.disc_amt_f = _tfield("Disc. Amt", 100)
 
         # Payment mode
         wpm = QWidget(); wpm.setStyleSheet("background:transparent")
         vlpm = QVBoxLayout(wpm); vlpm.setContentsMargins(0,0,0,0); vlpm.setSpacing(2)
         lbl_pm = QLabel("PAYMENT MODE")
-        lbl_pm.setStyleSheet(f"color:{TM};font-size:11px;font-weight:700;letter-spacing:1px;background:transparent")
+        lbl_pm.setStyleSheet(f"color:{TP};font-size:12px;font-weight:800;letter-spacing:0.8px;background:transparent")
         from PyQt6.QtWidgets import QComboBox
         self.pay_mode = QComboBox(); self.pay_mode.addItems(["Cash","UPI","Cash + UPI","Other"])
-        self.pay_mode.setFixedWidth(100)
+        self.pay_mode.setFixedWidth(130)
+        self.pay_mode.setStyleSheet(f"""
+            QComboBox {{
+                font-size:14px;font-weight:700;color:{TP};
+                padding:8px 12px;border:1px solid {BORDER};
+                border-radius:8px;background:{BG_INPUT};
+            }}
+            QComboBox:focus {{ border:1.5px solid {ACCENT}; }}
+            QComboBox::drop-down {{ border:none;width:22px; }}
+            QComboBox QAbstractItemView {{
+                font-size:14px;font-weight:700;color:{TP};
+                background:{BG_CARD};border:1.5px solid {ACCENT};
+                selection-background-color:{ACCENT};selection-color:white;
+            }}
+        """)
         vlpm.addWidget(lbl_pm); vlpm.addWidget(self.pay_mode)
 
-        w_paid, self.paid_edit     = _efield("Paid Amt",      "0.00", 80)
+        w_paid, self.paid_edit     = _efield("Paid Amt",      "0.00", 105)
         self.paid_edit.textChanged.connect(self._recalc_payment)
-        w_adv,  self.deduct_edit   = _efield("Deduct Advance","0.00", 90)
+        w_adv,  self.deduct_edit   = _efield("Deduct Advance","0.00", 115)
         self.deduct_edit.textChanged.connect(self._recalc_payment)
 
         for w in [w_sub, wd, w_da, wpm, w_paid, w_adv]:

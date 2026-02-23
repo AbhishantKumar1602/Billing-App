@@ -93,7 +93,7 @@ QLineEdit, QDoubleSpinBox, QSpinBox {{
     background: {BG_INPUT};
     border: 1.5px solid {BORDER};
     border-radius: 7px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     color: {TP};
     font-size: 14px;
     selection-background-color: {ACCENT};
@@ -130,10 +130,10 @@ QHeaderView {{ background: transparent; border: none; }}
 QHeaderView::section {{
     background: {BG};
     color: {TM};
-    font-size: 11px;  /* Slightly larger */
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 1px;
-    padding: 10px 12px;  /* Improved */
+    padding: 9px 8px;
     border: none;
     border-bottom: 2px solid {ACCENT};
     border-right: 1px solid {BORDER};
@@ -776,45 +776,35 @@ class BillingTab(QWidget):
 
         # ── Patient info — single compact horizontal card ──────
         pcard = QFrame(); pcard.setObjectName("card")
-        pg = QGridLayout(pcard); pg.setContentsMargins(14,12,14,12); pg.setSpacing(12)
-        pg.setColumnStretch(0, 3)
-        pg.setColumnStretch(1, 2)
-        pg.setColumnStretch(2, 1)
+        pg = QHBoxLayout(pcard); pg.setContentsMargins(14,9,14,9); pg.setSpacing(14)
 
-
-        def _lfield(label, placeholder):
+        def _lfield(label, placeholder, fixed_w=None):
             w = QWidget(); w.setStyleSheet("background:transparent")
             vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(2)
             lbl = QLabel(label.upper())
             lbl.setStyleSheet(f"color:{TM};font-size:11px;font-weight:700;letter-spacing:1px;background:transparent")
             inp = QLineEdit(); inp.setPlaceholderText(placeholder)
+            if fixed_w: inp.setFixedWidth(fixed_w)
             vl.addWidget(lbl); vl.addWidget(inp)
-            return w, inp            
+            return w, inp
 
-
-        w_patient, self.patient_edit = _lfield("Patient Name", "Patient / Customer name")
-        w_age, self.age_edit = _lfield("Age", "Age (yrs)")
-        w_gender, self.gender_edit = _lfield("Gender", "M / F / Other")
-        w_phone, self.phone_edit = _lfield("Mobile", "Phone number")
-        w_email, self.email_edit = _lfield("Email", "Email (opt.)")
-        w_date, self.date_edit = _lfield("Date", "DD-MM-YYYY")
+        w1, self.patient_edit  = _lfield("Patient Name", "Patient / Customer name")
+        w2, self.age_edit      = _lfield("Age",          "Age (yrs)",       60)
+        w3, self.gender_edit   = _lfield("Gender",       "M / F / Other",   80)
+        w4, self.phone_edit    = _lfield("Mobile",       "Phone number",   120)
+        w5, self.email_edit    = _lfield("Email",        "Email (opt.)",   160)
+        w6, self.date_edit     = _lfield("Date",         "DD-MM-YYYY",      95)
         self.invoice_no = ""
 
-        # Grid placement: responsive alignment
-        pg.addWidget(w_patient, 0, 0, 1, 2)  # Patient wide left
-        pg.addWidget(w_date, 0, 2)           # Date top-right
-        pg.addWidget(w_age, 1, 0)            # Age/Gender/Phone row
-        pg.addWidget(w_gender, 1, 1)
-        pg.addWidget(w_phone, 1, 2)
-        pg.addWidget(w_email, 2, 0, 1, 3)    # Email full bottom
-        root.addWidget(pcard)
-
+        pg.addWidget(w1, 3); pg.addWidget(w2); pg.addWidget(w3)
+        pg.addWidget(w4); pg.addWidget(w5); pg.addWidget(w6)
 
         # Address row
         pcard2 = QFrame(); pcard2.setObjectName("card")
-        pg2 = QHBoxLayout(pcard2); pg2.setContentsMargins(14,8,14,8); pg2.setSpacing(12)
+        pg2 = QHBoxLayout(pcard2); pg2.setContentsMargins(14,6,14,6); pg2.setSpacing(14)
         wa, self.addr_edit = _lfield("Patient Address", "Full address of patient")
         pg2.addWidget(wa)
+        root.addWidget(pcard)
         root.addWidget(pcard2)
 
         # ── Items mini-header ──────────────────────────────────
@@ -873,18 +863,12 @@ class BillingTab(QWidget):
 
         w_sub, self.subtotal_f = _tfield("Subtotal")
 
-        # Discount: now SpinBox for better UX
         wd = QWidget(); wd.setStyleSheet("background:transparent")
         vld = QVBoxLayout(wd); vld.setContentsMargins(0,0,0,0); vld.setSpacing(2)
-        lbl_d = QLabel("DISCOUNT")
+        lbl_d = QLabel("DISCOUNT %")
         lbl_d.setStyleSheet(f"color:{TM};font-size:11px;font-weight:700;letter-spacing:1px;background:transparent")
-        self.disc_edit = QDoubleSpinBox()
-        self.disc_edit.setFixedWidth(60)
-        self.disc_edit.setRange(0, 100)
-        self.disc_edit.setSingleStep(0.1)
-        self.disc_edit.setDecimals(2)
-        self.disc_edit.setSuffix("%")
-        self.disc_edit.valueChanged.connect(self._recalc)
+        self.disc_edit = QLineEdit("0"); self.disc_edit.setFixedWidth(55)
+        self.disc_edit.textChanged.connect(self._recalc)
         vld.addWidget(lbl_d); vld.addWidget(self.disc_edit)
 
         w_da, self.disc_amt_f = _tfield("Disc. Amt", 75)
@@ -899,10 +883,9 @@ class BillingTab(QWidget):
         self.pay_mode.setFixedWidth(100)
         vlpm.addWidget(lbl_pm); vlpm.addWidget(self.pay_mode)
 
-        w_paid, self.paid_edit = _efield("Paid Amt", "0.00", 80)
-        self.paid_edit.setPlaceholderText("₹ 0.00")  # Clearer
+        w_paid, self.paid_edit     = _efield("Paid Amt",      "0.00", 80)
         self.paid_edit.textChanged.connect(self._recalc_payment)
-        w_adv, self.deduct_edit = _efield("Deduct Adv.", "0.00", 90)
+        w_adv,  self.deduct_edit   = _efield("Deduct Advance","0.00", 90)
         self.deduct_edit.textChanged.connect(self._recalc_payment)
 
         for w in [w_sub, wd, w_da, wpm, w_paid, w_adv]:
@@ -1011,9 +994,9 @@ class BillingTab(QWidget):
             sub+=base
             items.append({"product":pname,"pack_size":cell(2),
                           "qty":qty,"rate":rate,"amount":base})
-        try: dp=max(0.0,min(100.0,float(self.disc_edit.value())))
+        try: dp=max(0.0,min(100.0,float(self.disc_edit.text())))
         except: dp=0.0
-        da = sub * dp / 100; after=sub-da
+        da=sub*dp/100; after=sub-da
         net_raw=after; netr=round(net_raw); ro=netr-net_raw
 
         try: paid=max(0.0, float(self.paid_edit.text()))
@@ -1063,8 +1046,8 @@ class BillingTab(QWidget):
         self.phone_edit.clear(); self.email_edit.clear(); self.addr_edit.clear()
         self.invoice_no = next_invoice_no()
         self.inv_badge.setText(self.invoice_no)
-        self.date_edit.setReadOnly(True)
-        self.disc_edit.setValue(0)
+        self.date_edit.setText(datetime.now().strftime("%d-%m-%Y"))
+        self.disc_edit.setText("0")
         self.paid_edit.clear(); self.deduct_edit.clear()
         self._add_row(); self._recalc()
 
@@ -1134,7 +1117,7 @@ class BillingTab(QWidget):
         self.invoice_no = d.get("invoice_no","")
         self.inv_badge.setText(self.invoice_no)
         self.date_edit.setText(d.get("date",""))
-        self.disc_edit.setValue(d.get("discount_pct", 0))
+        self.disc_edit.setText(str(d.get("discount_pct",0)))
         self.paid_edit.setText(str(d.get("paid_amount","")))
         self.deduct_edit.setText(str(d.get("deducted_advance","")))
         for item in d.get("items",[]): self._add_row(item)
@@ -1330,17 +1313,14 @@ class SettingsTab(QWidget):
         card=QFrame(); card.setObjectName("card"); card.setMaximumWidth(600)
         g=QGridLayout(card); g.setContentsMargins(20,18,20,18); g.setSpacing(12)
         self.fields={}; s=get_shop()
-        # In enumerate list:
         for i,(k,lb) in enumerate([("shop_name","SHOP NAME"),("store_tag","STORE TAG / SPECIALITY"),
                                     ("dr_name","DOCTOR / PROPRIETOR NAME"),
+                                    ("regd_no","REGD. NO. (e.g. IAP/L-13459)"),
                                     ("address1","ADDRESS LINE 1"),
                                     ("address2","ADDRESS LINE 2"),
                                     ("address3","ADDRESS LINE 3 (City, State, PIN)"),
                                     ("phone","MOBILE / PHONE"),
-                                    ("gstin","GSTIN (optional)"),
-                                    ("regd_no","REGD. NO. (e.g. IAP/L-13459)"),
                                     ("website","WEBSITE (e.g. www.example.com)")]):
-
             g.addWidget(mk_section(lb),i,0); f=QLineEdit(s.get(k,"")); self.fields[k]=f; g.addWidget(f,i,1)
         l.addWidget(card)
         btn=QPushButton("✔  Save Settings"); btn.setObjectName("accent")
@@ -1348,9 +1328,8 @@ class SettingsTab(QWidget):
 
     def _save(self):
         conn=sqlite3.connect(DB_PATH); c=conn.cursor()
-        # In _save:
-        c.execute("""UPDATE shop_settings SET shop_name=?,store_tag=?,dr_name=?,address1=?,address2=?,address3=?,phone=?,gstin=?,regd_no=?,website=? WHERE id=1""",
-                tuple(self.fields[k].text() for k in ["shop_name","store_tag","dr_name","address1","address2","address3","phone","gstin","regd_no","website"]))
+        c.execute("UPDATE shop_settings SET shop_name=?,store_tag=?,dr_name=?,regd_no=?,address1=?,address2=?,address3=?,phone=?,website=? WHERE id=1",
+            tuple(self.fields[k].text() for k in ["shop_name","store_tag","dr_name","regd_no","address1","address2","address3","phone","website"]))
         conn.commit(); conn.close()
         QMessageBox.information(self,"✔  Saved","Settings saved successfully!")
 
