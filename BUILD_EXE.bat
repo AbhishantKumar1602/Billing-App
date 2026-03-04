@@ -1,27 +1,26 @@
 @echo off
-title Build EXE - Billing App
-color 0A
+echo ========================================
+echo  Building billing_final.exe ...
+echo ========================================
+
+:: Install PyInstaller
+echo Installing PyInstaller...
+pip install pyinstaller
+
+:: Run PyInstaller via python -m (works even if pyinstaller not in PATH)
+echo.
+echo Building EXE...
+python -m PyInstaller --onefile --windowed --name "BillingApp" billing_final_screenWise.py
+
+if %errorlevel% neq 0 (
+    echo.
+    echo ERROR: Build failed. Check the output above for details.
+    pause
+    exit /b 1
+)
 
 echo.
-echo  ============================================
-echo   BUILD BILLING APP AS .EXE
-echo  ============================================
-echo.
-
-echo  Installing PyInstaller...
-pip install pyinstaller --quiet
-
-echo  Building EXE (this may take 1-2 minutes)...
-echo.
-
-pyinstaller --noconfirm --onefile --windowed ^
-  --name "BillingApp" ^
-  --add-data "billing.db;." ^
-  billing_app.py
-
-echo.
-echo  ============================================
-echo   DONE! EXE is in the "dist" folder.
-echo  ============================================
-echo.
+echo ========================================
+echo  Done! EXE is in the dist\ folder.
+echo ========================================
 pause

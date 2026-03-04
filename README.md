@@ -1,81 +1,86 @@
-# 🧾 Billing App — Vijay Homoeo Stores
-## Full Desktop Billing Application (Python + PyQt6)
+# THE PHYSIOREHAB — Billing App Setup Guide
 
----
+## ▶ How to Customise for Any Clinic
 
-## 📦 What's Included
+Open `billing_final.py` in any text editor (Notepad is fine).
+Find the **CLINIC CONFIGURATION** block near the top (around line 20).
+Change only these values:
 
-| File | Purpose |
-|------|---------|
-| `billing_app.py` | Main application |
-| `requirements.txt` | Python packages needed |
-| `LAUNCH.bat` | One-click run (Windows) |
-| `BUILD_EXE.bat` | Convert to standalone .exe |
-
----
-
-## 🚀 How to Run
-
-### Option 1 — Easiest (Just Double-Click)
-1. Make sure Python is installed → https://python.org/downloads  
-   ✅ During install, check **"Add Python to PATH"**
-2. Double-click **`LAUNCH.bat`**  
-   It auto-installs all packages and launches the app.
-
-### Option 2 — Manual (Command Prompt)
-```bash
-pip install PyQt6 PyQt6-WebEngine
-python billing_app.py
+```python
+CLINIC_NAME      = "THE PHYSIOREHAB"          # Big name on invoice
+CLINIC_TAG       = "Physiotherapy Clinic"      # Smaller subtitle
+CLINIC_ADDR1     = "65, Udai Nagar-A, Nirman Nagar"
+CLINIC_ADDR2     = "Near Mansarovar Metro Station"
+CLINIC_ADDR3     = "Jaipur, Rajasthan - 302019"
+CLINIC_PHONE     = "9828600634"
+CLINIC_WEBSITE   = "www.thephysiorehab.com"
+CLINIC_DR_NAME   = "Dr. Upendra Agrawal (PT)"
+CLINIC_REGD_NO   = "IAP/L-13459"              # Not shown on invoice, kept for records
+CLINIC_LOGO_PATH = "logo.png"                  # Logo file name (place next to exe)
+APP_TITLE        = "THE PHYSIOREHAB — Billing" # Window title bar
 ```
 
-### Option 3 — Build a Standalone .EXE
-Double-click **`BUILD_EXE.bat`**  
-→ Your `.exe` will appear in the `dist/` folder  
-→ Copy that `.exe` anywhere and run without needing Python installed
+**No Settings tab** — the invoice layout is locked to these values.
+Nobody using the app can accidentally change the clinic name or logo.
 
----
 
-## 🖥️ Features
+## ▶ Logo Setup
 
-### 📝 New Invoice Tab
-- Fill in Patient Name, Doctor, Invoice No., Date
-- Add unlimited product rows (Description, HSN, Mfg, Pack, Batch, Qty, Rate, CGST%, SGST%)
-- **Live preview** of the invoice updates as you type
-- Auto-calculates: Subtotal → Discount → CGST/SGST → Net Amount → Round Off
-- Amount in words auto-generated (e.g. "One Thousand Five Hundred Seventy Nine only")
+1. Rename your clinic logo file to `logo.png` (or `logo.jpg`)
+2. Update `CLINIC_LOGO_PATH = "logo.png"` to match the filename
+3. When running as EXE: place `logo.png` in the **same folder as the .exe**
+4. When running as .py: place `logo.png` in the **same folder as billing_final.py**
 
-### 📄 Export & Print
-- **Export PDF** → Saves print-ready A4 PDF anywhere you choose
-- **Print** → Opens print dialog for direct printing
-- PDF auto-opens after export
+Supported formats: PNG, JPG, JPEG
 
-### 📋 History Tab
-- All saved invoices stored in local database (`billing.db`)
-- Search by patient name or invoice number
-- Double-click any invoice to reopen and reprint/re-export
 
-### ⚙️ Settings Tab
-- Edit Shop Name, Address, Phone, GSTIN, DL No., Food Lic. No.
-- All details auto-appear in every invoice header
+## ▶ Database (billing.db)
 
----
+- Created automatically on first run
+- Stored next to the `.exe` file (or next to the `.py` file)
+- Contains all patients, invoices, and product catalogue
+- **Back up this file regularly!** — it is your entire data store
+- To move to a different location, change `DB_LOCATION` in the config block
 
-## 🗂️ Database
-- SQLite database (`billing.db`) created automatically in same folder
-- Stores all invoices permanently
-- No internet connection required — fully offline
 
----
+## ▶ Building the EXE (Windows)
 
-## 💡 Tips
-- After saving an invoice, app auto-resets for the next bill
-- Invoice numbers auto-increment (R-000001, R-000002...)
-- You can reopen old invoices from History and re-export as PDF
-- The database file can be backed up by simply copying `billing.db`
+### Requirements
+```
+pip install PyQt6 PyQt6-WebEngine pyinstaller openpyxl
+```
 
----
+### Build
+1. Double-click `build_exe.bat`   
+   OR run in terminal:
+   ```
+   pyinstaller --onefile --windowed --name "PhysioRehab_Billing" billing_final.py
+   ```
+2. EXE appears in the `dist\` folder
+3. Copy `logo.png` into the same `dist\` folder as the EXE
+4. Run `PhysioRehab_Billing.exe` — `billing.db` is created automatically
 
-## ⚠️ Requirements
-- Windows 10 / 11
-- Python 3.10 or higher (only needed for Option 1 & 2)
-- ~200MB disk space (for PyQt6 packages)
+### Folder structure after build
+```
+dist\
+  PhysioRehab_Billing.exe    ← the app
+  logo.png                   ← your clinic logo (copy here!)
+  billing.db                 ← auto-created on first run (your data)
+```
+
+
+## ▶ Running directly as Python (no build)
+
+```
+python billing_final.py
+```
+
+Place `logo.png` in the same folder as `billing_final.py`.
+
+
+## ▶ Invoice Details
+
+- Invoice numbers: `IN-001`, `IN-002`, ...
+- Receipt numbers: auto-generated from invoice number (`RCT-001`)
+- PDF page: A5 Landscape
+- Settings tab: **removed** (clinic details are locked in config)
