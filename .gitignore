@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.env
+
+# Build folders
+build/
+dist/
+
+# Temporary files
+*_tmp.*
+*.log
+
+# Database (optional – ignore if you don't want to upload it)
+billing.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# PyInstaller files
+*.spec
