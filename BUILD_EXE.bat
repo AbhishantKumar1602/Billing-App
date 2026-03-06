@@ -10,7 +10,7 @@ pip install pyinstaller
 :: Run PyInstaller via python -m (works even if pyinstaller not in PATH)
 echo.
 echo Building EXE...
-python -m PyInstaller --onefile --windowed --name "BillingApp" billing_final_screenWise.py
+python -m PyInstaller --onefile --windowed --name "BillingApp" THE PHYSIOREHAB.py
 
 if %errorlevel% neq 0 (
     echo.
