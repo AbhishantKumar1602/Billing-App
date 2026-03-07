@@ -22,11 +22,11 @@ import platform
 
 CLINIC_NAME      = "THE PHYSIOREHAB"
 CLINIC_TAG       = ""
-CLINIC_ADDR1     = "65, Udai Nagar-A, Nirman Nagar"
+CLINIC_ADDR1     = "65-Basement, Udai Nagar-A, Nirman Nagar"
 CLINIC_ADDR2     = "Near Mansarovar Metro Station"
 CLINIC_ADDR3     = "Jaipur, Rajasthan - 302019"
 CLINIC_PHONE     = "9828600634"
-CLINIC_WEBSITE   = "https://www.thephysiorehab.com"
+CLINIC_WEBSITE   = "www.thephysiorehab.com"
 CLINIC_DR_NAME   = "Dr. Upendra Agrawal"
 CLINIC_REGD_NO   = "IAP/L-13459"        # shown nowhere on invoice (removed), kept for DB
 
@@ -1446,7 +1446,7 @@ class BillingTab(QWidget):
         # ── Items table — STRETCH to fill all remaining space ──
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["#","Description","Unit","Rate (₹)","Total (₹)"])
+        self.table.setHorizontalHeaderLabels(["#","Description","Unit","Charges (₹)","Total (₹)"])
         hh = self.table.horizontalHeader()
         for col in [0,2,3,4]: hh.setSectionResizeMode(col, QHeaderView.ResizeMode.Fixed)
         hh.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
