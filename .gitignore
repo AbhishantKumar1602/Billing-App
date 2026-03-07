@@ -9,6 +9,7 @@ venv/
 # Build folders
 build/
 dist/
+ThePhysioRehab/
 
 # Temporary files
 *_tmp.*

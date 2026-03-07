@@ -4,7 +4,7 @@ from datetime import datetime
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QTableWidget, QTableWidgetItem,
+    QLabel, QLineEdit, QTextEdit, QPushButton, QTableWidget, QTableWidgetItem,
     QFrame, QDoubleSpinBox, QMessageBox, QFileDialog,
     QHeaderView, QDialog, QGridLayout, QTabWidget, QStatusBar,
     QAbstractItemView, QCompleter, QDialogButtonBox, QScrollArea,
@@ -397,9 +397,9 @@ def init_db():
     c.execute("SELECT COUNT(*) FROM products")
     if c.fetchone()[0] == 0:
         c.executemany("INSERT INTO products (name,pack_size,price,category) VALUES (?,?,?,?)", [
-            ("Consultation", "1 Session", 500.00, "Consultation"),
-            ("Physiotherapy", "1 Visit", 700.00, "Physiotherapy"),
-            ("Physiotherapy Package", "1 Package", 6000.00, "Physiotherapy")
+            ("Consultation", "", 0, "Consultation"),
+            ("Physiotherapy (1 Visit)", "", 0, "Physiotherapy"),
+            ("Physiotherapy (1 Package)", "", 0, "Physiotherapy")
         ])
     conn.commit(); conn.close()
 
@@ -725,14 +725,15 @@ def export_invoices_excel(parent_widget, rows=None):
         from openpyxl import Workbook
         from openpyxl.utils import get_column_letter
     except ImportError:
-        QMessageBox.critical(parent_widget, "Missing Library",
-            "openpyxl is not installed.\n\nRun:  pip install openpyxl"); return
+        QMessageBox.critical(None, "Missing Library",
+            "openpyxl is not installed.\nPlease contact support or reinstall the application.")
+        return
     # If no rows passed, fetch all from DB
     if rows is None:
         conn = sqlite3.connect(DB_PATH); c = conn.cursor()
         c.execute("""
             SELECT
-                i.invoice_no, i.date,
+                i.id, i.invoice_no, i.date,
                 COALESCE(p.id,'') AS patient_id,
                 i.patient_name, i.patient_phone, i.net_amount
             FROM invoices i
@@ -741,11 +742,12 @@ def export_invoices_excel(parent_widget, rows=None):
                AND TRIM(LOWER(i.patient_name))  = TRIM(LOWER(p.name))
             ORDER BY i.id
         """)
-        rows_data = c.fetchall(); conn.close()
+        raw = c.fetchall(); conn.close()
+        rows_data = [(r[1], f"RCT{str(r[0]).zfill(3)}", r[2], r[3], r[4], r[5], r[6]) for r in raw]
     else:
         # rows are (id, invoice_no, date, patient_id, patient_name, phone, net_amount)
         # Reverse so oldest invoice is Sr.1 at top, newest at bottom (chronological order)
-        rows_data = [(r[1], r[2], r[3], r[4], r[5], r[6]) for r in reversed(rows)]
+        rows_data = [(r[1], f"RCT{str(r[0]).zfill(3)}", r[2], r[3], r[4], r[5], r[6]) for r in reversed(rows)]
 
     path, _ = QFileDialog.getSaveFileName(
         parent_widget, "Export Invoices to Excel",
@@ -754,11 +756,11 @@ def export_invoices_excel(parent_widget, rows=None):
     if not path: return
     wb = Workbook(); ws = wb.active; ws.title = "Invoice History"
     ws.freeze_panes = "A2"
-    ws.append(["Sr. No.", "Invoice ID", "Date", "Patient ID", "Patient Name", "Mobile", "Net Amount (\u20b9)"])
+    ws.append(["Sr. No.", "Invoice ID", "Receipt ID", "Date", "Patient ID", "Patient Name", "Mobile", "Net Amount (\u20b9)"])
     data_row_nums = []
     for sr, row in enumerate(rows_data, 1):
         ws.append([sr] + list(row)); data_row_nums.append(ws.max_row)
-    amt_col = 7; amt_letter = get_column_letter(amt_col)  # now col 7
+    amt_col = 8; amt_letter = get_column_letter(amt_col)  # now col 8
     if data_row_nums:
         sum_row = max(data_row_nums) + 1
         ws.cell(sum_row, 1).value = "NET TOTAL"
@@ -771,7 +773,9 @@ def export_invoices_excel(parent_widget, rows=None):
         wb.save(path)
         QMessageBox.information(parent_widget, "\u2714  Exported",
             f"{len(rows_data)} record(s) exported!\n\n{path}")
-        if platform.system() == "Windows": os.startfile(path)
+        if platform.system() == "Windows":
+            import subprocess
+            subprocess.Popen(["cmd", "/c", "start", "", path], shell=False)
     except Exception as e:
         QMessageBox.critical(parent_widget, "Export Error", str(e))
 
@@ -780,8 +784,9 @@ def export_patients_excel(parent_widget):
     try:
         from openpyxl import Workbook
     except ImportError:
-        QMessageBox.critical(parent_widget, "Missing Library",
-            "openpyxl is not installed.\n\nRun:  pip install openpyxl"); return
+        QMessageBox.critical(None, "Missing Library",
+            "openpyxl is not installed.\nPlease contact support or reinstall the application.")
+        return
     path, _ = QFileDialog.getSaveFileName(
         parent_widget, "Export Patient Data to Excel",
         f"Patients_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx",
@@ -802,7 +807,9 @@ def export_patients_excel(parent_widget):
     try:
         wb.save(path)
         QMessageBox.information(parent_widget, "\u2714  Exported", f"Patient data exported!\n\n{path}")
-        if platform.system() == "Windows": os.startfile(path)
+        if platform.system() == "Windows":
+            import subprocess
+            subprocess.Popen(["cmd", "/c", "start", "", path], shell=False)
     except Exception as e:
         QMessageBox.critical(parent_widget, "Export Error", str(e))
 
@@ -845,8 +852,8 @@ body{font-family:'Times New Roman',Times,serif;font-size:13px;color:#1a1a2e;back
 /* invoice meta row */
 .inv-meta{display:flex;justify-content:space-between;align-items:flex-start;
   border:1px solid #d0d4e8;border-radius:4px;padding:6px 12px;margin-bottom:7px;background:#f7f8ff}
-.inv-meta .lbl{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:700}
-.inv-meta .val{font-size:12px;font-weight:700;color:#1a1a2e}
+.inv-meta .lbl{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:700;text-align:center}
+.inv-meta .val{font-size:12px;font-weight:700;color:#1a1a2e;text-align:center}
 /* patient box */
 .pat-box{border:1px solid #d0d4e8;border-radius:4px;padding:7px 12px;margin-bottom:7px;background:#f7f8ff}
 .pat-box .lbl{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:3px}
@@ -859,7 +866,7 @@ table{width:100%;border-collapse:collapse;margin-bottom:7px}
 thead tr{background:#2e2860;color:#fff}
 th{padding:6px 5px;font-size:10px;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
 th.l{text-align:left;padding-left:8px}th.r{text-align:right;padding-right:8px}
-td{border-bottom:1px solid #eef0f8;font-size:12px;padding:5px 5px;color:#222}
+td{border-bottom:1px solid #eef0f8;font-size:16px;padding:6px 5px;color:#111;font-weight:500}
 td.l{text-align:left;padding-left:8px}
 td.r{text-align:right;padding-right:8px;font-weight:600}
 td.c{text-align:center}
@@ -870,15 +877,17 @@ tbody tr:last-child td{border-bottom:1.5px solid #1a1a2e}
   width:100%;
   font-size:13.5px;
   color:#000;
-  padding:2px 10px 2px 10px; /* very small top padding */
+  padding:4px 10px 4px 10px;
   border:1px solid #d0d4e8;
   border-radius:4px;
-  background:#fffef5;
+  background:#ffffff;
   white-space:pre-line;
-  line-height:1.2;
+  line-height:1.5;
   margin-top:0;
+  overflow:visible;
+  word-break:break-word;
 }
-.bottom-row{display:flex;gap:12px;align-items:flex-start;margin-top:0}
+.bottom-row{display:flex;gap:12px;align-items:stretch;margin-top:0}
 .remarks-box b{color:#1a1a2e;text-transform:uppercase;font-size:9px;letter-spacing:1px}
 /* bottom section */
 .bottom{display:flex;gap:12px;align-items:flex-start;margin-top:8px}
@@ -892,9 +901,9 @@ tbody tr:last-child td{border-bottom:1.5px solid #1a1a2e}
 .pay-info td{font-size:10px;padding:4px 3px;text-align:center;border-bottom:1px solid #eee}
 /* totals */
 .totals{width:100%;border:1px solid #d0d4e8;border-radius:4px;overflow:hidden}
-.trow{display:flex;justify-content:space-between;padding:4px 12px;border-bottom:1px solid #eef0f8;font-size:11px}
+.trow{display:flex;justify-content:space-between;padding:5px 12px;border-bottom:1px solid #eef0f8;font-size:13px;font-weight:600;color:#1a1a2e}
 .trow.disc{color:#b00000;background:#fff5f5}
-.trow.net{background:#2e2860;color:#fff !important;font-size:14px;font-weight:900;border:none;padding:6px 12px}
+.trow.net{background:#2e2860;color:#fff !important;font-size:15px;font-weight:900;border:none;padding:7px 12px}
 .trow.received{background:#e8f8ee;color:#145214;font-weight:700;font-size:11px}
 .trow.advance{background:#fff8e1;color:#7a5500;font-size:11px}
 .trow.due{background:#fff0f0;color:#b00;font-weight:700;font-size:12px}
@@ -915,7 +924,14 @@ def _inv_body(d, shop, label=""):
     MIN_ROWS = 4  # always show at least 5 item rows
     items = d.get("items", [])
     rows = ""
-    for i, item in enumerate(items, 1):
+    valid_items = []
+    for item in items:
+        pname = item.get('product', '').strip()
+        try: total_amt = float(item.get('qty', 0)) * float(item.get('rate', 0))
+        except: total_amt = 0
+        if pname and total_amt != 0:   # skip blank/zero rows
+            valid_items.append(item)
+    for i, item in enumerate(valid_items, 1):
         pack  = item.get('pack_size','').strip()
         if pack.lower() in ['1 visit', '1 session', 'visit', 'session', '1 pack']:
             pack = ''
@@ -928,13 +944,13 @@ def _inv_body(d, shop, label=""):
         total_amt = qty * rate
         rows += f"""<tr>
           <td class=c>{i}</td><td class=l>{pcell}</td>
-          <td class=r>&#8377;{rate:.2f}</td>
+          <td class=c>&#8377;{rate:.2f}</td>
           <td class=c>{qd}</td>
-          <td class=r>&#8377;{total_amt:.2f}</td>
+          <td class=c>&#8377;{total_amt:.2f}</td>
         </tr>"""
     # Pad with empty rows to ensure minimum MIN_ROWS height
     blank_row = "<tr style='height:20px'><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>"
-    for _ in range(max(0, MIN_ROWS - len(items))):
+    for _ in range(max(0, MIN_ROWS - len(valid_items))):
         rows += blank_row
     net = d.get('net_amount', 0)
     s = shop
@@ -999,12 +1015,13 @@ def _inv_body(d, shop, label=""):
     net     = fv('net_amount')
     paid    = fv('paid_amount', 0)
 
-    # Discount row — only show if discount > 0
-    dp = d.get('discount_pct', 0)
-    da = d.get('discount_amt', 0)
-    disc_row = ""
-    if dp and dp > 0:
+    # Discount row — always show; if 0 show plain 0, else show pct and amount
+    dp = d.get('discount_pct', 0) or 0
+    da = d.get('discount_amt', 0) or 0
+    if da > 0:
         disc_row = f'<div class="trow disc"><span>Discount ({dp:.1f}%)</span><span>&#8722;&#8377;{da:.2f}</span></div>'
+    else:
+        disc_row = '<div class="trow disc"><span>Discount</span><span>&#8377;0.00</span></div>'
 
     logo = s.get('logo_path','')
     if logo and logo.startswith('data:'):
@@ -1042,14 +1059,21 @@ def _inv_body(d, shop, label=""):
             if norm(m['name']) == target:
                 pid_val = m['id']; break
 
-    # Dynamic Receipt Number based on Invoice Number: TP/FY/001 -> RCT001
+    # Dynamic Receipt Number: uses global DB invoice ID (never resets when year/FY changes)
     inv_no = d.get('invoice_no', '—')
     try:
-        if "/" in inv_no:
+        import sqlite3 as _sq
+        _conn = _sq.connect(DB_PATH); _cc = _conn.cursor()
+        _cc.execute("SELECT id FROM invoices WHERE invoice_no = ?", (inv_no,))
+        _row = _cc.fetchone()
+        _conn.close()
+        if _row:
+            # Use actual row id — global sequential counter, never resets
+            receipt_no = f"RCT{str(_row[0]).zfill(3)}"
+        elif "/" in inv_no:
             seq = inv_no.split("/")[-1]
             receipt_no = f"RCT{seq}"
         else:
-            # Fallback for old IN-XXX format if any
             import re
             m = re.search(r'\d+', inv_no)
             receipt_no = f"RCT{m.group()}" if m else f"RCT{inv_no}"
@@ -1095,31 +1119,17 @@ def _inv_body(d, shop, label=""):
     <thead><tr>
       <th style="width:22px">#</th>
       <th class=l>Description</th>
-      <th style="width:70px" class=r>Charges (&#8377;)</th>
-      <th style="width:36px">Unit</th>
-      <th style="width:80px" class=r>Total (&#8377;)</th>
+      <th style="width:100px">Charges (&#8377;)</th>
+      <th style="width:60px">Unit</th>
+      <th style="width:110px">Total (&#8377;)</th>
     </tr></thead>
     <tbody>{rows}</tbody>
   </table>
 
   <div class="bottom-row top">
     <div class="left">
-      <div class="remarks-box">
-        <b>REMARKS:</b><br>{d.get('remarks','') or ''}
-      </div>
-    </div>
-    <div class="right">
-      <div class="totals">
-        <div class="trow"><span>Sub Total</span><span>&#8377;{d.get('subtotal',0):.2f}</span></div>
-        {disc_row}
-        <div class="trow net"><span>NET AMOUNT</span><span>&#8377;{net:.2f}</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bottom-row">
-    <div class="left">
-      <div class="pay-info">
+      <div class="remarks-box"><b>REMARKS:</b> {d.get('remarks','') or ''}</div>
+      <div class="pay-info" style="margin-top:8px">
         <table>
           <thead><tr>
             <th>Receipt No.</th><th>Date</th><th>Mode</th><th>Amount Received (&#8377;)</th>
@@ -1135,8 +1145,15 @@ def _inv_body(d, shop, label=""):
         </table>
       </div>
     </div>
-    <div class="right" style="text-align:center">
-      <div class="sig">Authorised Sign.</div>
+    <div class="right">
+      <div class="totals">
+        <div class="trow"><span>Sub Total</span><span>&#8377;{d.get('subtotal',0):.2f}</span></div>
+        {disc_row}
+        <div class="trow net"><span>NET AMOUNT</span><span>&#8377;{net:.2f}</span></div>
+      </div>
+      <div style="text-align:center;margin-top:12px">
+        <div class="sig">Authorised Sign.</div>
+      </div>
     </div>
   </div>
 </div>"""
@@ -1172,6 +1189,10 @@ def build_single_html(d, shop, for_print=False):
         margin:0;
         position:relative;
     }
+    QTableWidget::item:focus {
+        background-color: #fff9c4;
+        border: 2px solid {ACCENT};
+    }
     .cut-line span{
         background:#fff;
         padding:0 8px;
@@ -1201,15 +1222,15 @@ def build_single_html(d, shop, for_print=False):
     .dr-name{{font-size:28px;color:#000}}
     .hdr-right .info-line{{font-size:14px;line-height:1.3;color:#111}}
     .inv-meta{{padding:2px 5px;margin-bottom:2px}}
-    .inv-meta .val{{font-size:14px;color:#000}}
-    .inv-meta .lbl{{font-size:11px}}
+    .inv-meta .val{{font-size:14px;color:#000;text-align:center}}
+    .inv-meta .lbl{{font-size:11px;text-align:center}}
     .pat-box{{padding:2px 5px;margin-bottom:2px}}
     .pat-box .lbl{{font-size:11px}}
     .pat-name-big{{font-size:18px;color:#000}}
     .pat-item{{font-size:14px;color:#000}}
     .pat-item b{{color:#000}}
     th{{font-size:12px;padding:3px 3px;color:#fff !important}}
-    td{{font-size:14px;padding:3px 3px;color:#000}}
+    td{{font-size:15px;padding:3px 3px;color:#000}}
     td.r{{font-weight:800}}
     .trow{{font-size:14px;padding:3px 12px;color:#000;font-weight:600}}
     .trow.net{{font-size:16px;padding:4px 12px;color:#fff !important;font-weight:900}}
@@ -1220,8 +1241,8 @@ def build_single_html(d, shop, for_print=False):
     .copy-label{{display:none}}
     .pay-info td{{font-size:13px;padding:3px 10px;color:#000;text-align:center}}
     .pay-info th{{font-size:11px;padding:3px 10px;color:#fff !important}}
-    .remarks-box{{font-size:13.5px;color:#000;padding:0 10px 2px 10px;white-space:pre-line}}
-    .bottom-row{{display:flex;gap:12px;align-items:flex-start;margin-top:0}}
+    .remarks-box{{font-size:13.5px;color:#000;background:#ffffff;padding:4px 10px 4px 10px;white-space:pre-line;line-height:1.5;overflow:visible;word-break:break-word;}}
+    .bottom-row{{display:flex;gap:12px;align-items:stretch;margin-top:0}}
     .bottom-row.top{{align-items:flex-start}}
     .bottom-row .left{{flex:1}}
     .bottom-row .right{{width:275px}}
@@ -1313,8 +1334,8 @@ class BillingTab(QWidget):
         p8  = max(4,  int(8  * sc))
         p12 = max(6,  int(12 * sc))
         root = QVBoxLayout(self)
-        root.setContentsMargins(16, 10, 16, 10)
-        root.setSpacing(8)
+        root.setContentsMargins(max(8, int(16*sc)), max(6, int(10*sc)), max(8, int(16*sc)), max(6, int(10*sc)))
+        root.setSpacing(max(4, int(8*sc)))
 
         # ── Title row + action buttons (all in ONE row) ─────────
         title_row = QHBoxLayout(); title_row.setSpacing(8)
@@ -1322,31 +1343,24 @@ class BillingTab(QWidget):
         icon.setStyleSheet(f"color:{ACCENT};font-size:{f18}px;background:transparent;font-weight:900")
         title = QLabel("New Invoice")
         title.setStyleSheet(f"color:{TP};font-size:{f18}px;font-weight:800;background:transparent")
-        self.inv_badge = QLabel("R-000001")
+        self.inv_badge = QLabel(self.invoice_no)
         self.inv_badge.setStyleSheet(
-            f"color:{ACCENT};font-size:{f13}px;font-weight:800;"
+            f"color:{ACCENT};font-size:{f14}px;font-weight:800;"
             f"background:{ACCENT_D};border:1px solid {ACCENT}55;"
-            f"border-radius:6px;padding:3px 12px")
+            f"border-radius:6px;padding:4px 18px")
         title_row.addWidget(icon); title_row.addSpacing(4)
-        title_row.addWidget(title); title_row.addSpacing(8)
-        title_row.addWidget(self.inv_badge); title_row.addStretch()
-
-        btn_new     = QPushButton("＋ New")
-        btn_preview = QPushButton("◉ Preview");   btn_preview.setObjectName("accent")
-        btn_save    = QPushButton("✔ Save");       btn_save.setObjectName("green")
-        btn_pdf     = QPushButton("⬇ PDF");        btn_pdf.setObjectName("yellow")
-        btn_print   = QPushButton("⎙ Print")
-        for b in [btn_new,btn_preview,btn_save,btn_pdf,btn_print]:
+        title_row.addWidget(title); title_row.addSpacing(10)
+        title_row.addWidget(self.inv_badge)
+        title_row.addStretch()
+        self.btn_new_top     = QPushButton("＋ New")
+        self.btn_preview_top = QPushButton("◉ Preview");   self.btn_preview_top.setObjectName("accent")
+        for b in [self.btn_new_top, self.btn_preview_top]:
             b.setFixedHeight(32)
-        btn_new.setToolTip("Clear and start a new invoice")
-        btn_pdf.setToolTip("Export Admin & Customer copies as one PDF")
-        btn_new.clicked.connect(self._reset)
-        btn_preview.clicked.connect(self._preview)
-        btn_save.clicked.connect(self._save)
-        btn_pdf.clicked.connect(self._export_pdf)
-        btn_print.clicked.connect(self._print)
-        for b in [btn_new, btn_preview, btn_save, btn_pdf, btn_print]:
             title_row.addWidget(b)
+        
+        self.btn_new_top.clicked.connect(self._reset)
+        self.btn_preview_top.clicked.connect(self._preview)
+        
         root.addLayout(title_row)
 
         # ── Patient info — single compact horizontal card ──────
@@ -1357,19 +1371,20 @@ class BillingTab(QWidget):
             w = QWidget(); w.setStyleSheet("background:transparent")
             vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(2)
             lbl = QLabel(label.upper())
-            lbl.setStyleSheet(f"color:{TM};font-size:{f11}px;font-weight:700;letter-spacing:1px;background:transparent")
+            lbl.setStyleSheet(f"color:#1a1a2e;font-size:{f14}px;font-weight:900;letter-spacing:1px;background:transparent")
             inp = QLineEdit(); inp.setPlaceholderText(placeholder)
+            inp.setStyleSheet(f"font-size:{f14}px;font-weight:600;color:{TP};")
             if fixed_w: inp.setFixedWidth(fixed_w)
             vl.addWidget(lbl); vl.addWidget(inp)
             return w, inp
 
-        w0, self.pid_edit      = _lfield("Patient ID",   "TPRC01",           110)
+        w0, self.pid_edit      = _lfield("Patient ID",   "TPR001",           max(80, int(110*sc)))
         w1, self.patient_edit  = _lfield("Patient Name", "Patient / Customer name")
-        w2, self.age_edit      = _lfield("Age",          "Age (yrs)",        95)
-        w3, self.gender_edit   = _lfield("Gender",       "M / F / Other",   120)
-        w4, self.phone_edit    = _lfield("Mobile",       "Phone number",    165)
-        w5, self.email_edit    = _lfield("Email",        "Email (opt.)",    200)
-        w6, self.date_edit     = _lfield("Date",         "DD-MM-YYYY",      130)
+        w2, self.age_edit      = _lfield("Age",          "Age (yrs)",        max(60, int(95*sc)))
+        w3, self.gender_edit   = _lfield("Gender",       "M / F / Other",   max(90, int(120*sc)))
+        w4, self.phone_edit    = _lfield("Mobile",       "Phone number",    max(120, int(165*sc)))
+        w5, self.email_edit    = _lfield("Email",        "Email (opt.)",    max(150, int(200*sc)))
+        w6, self.date_edit     = _lfield("Date",         "DD-MM-YYYY",      max(100, int(130*sc)))
         self._patient_autofill_lock = False  # prevent re-entrant signals
 
         # ── Patient Name autocomplete — shows "Name (mobile)" for disambiguation ──
@@ -1380,6 +1395,9 @@ class BillingTab(QWidget):
         self.patient_edit.setCompleter(self._name_completer)
         self._name_completer.activated.connect(self._on_patient_name_selected)
         self.patient_edit.textChanged.connect(self._on_patient_name_typed)
+        _name_popup = self._name_completer.popup()
+        _name_popup.setStyleSheet("QListView { font-size: 14px; } QListView::item { min-height: 30px; padding: 4px 8px; }")
+        _name_popup.setMinimumWidth(300)
 
         # ── Patient ID autocomplete ──────────────────────────────────
         self._pid_completer = QCompleter(all_patient_ids(), self.pid_edit)
@@ -1398,36 +1416,24 @@ class BillingTab(QWidget):
         self._mobile_completer.activated.connect(self._on_mobile_selected)
         self.phone_edit.textChanged.connect(self._on_mobile_typed)
         self.phone_edit.editingFinished.connect(self._on_mobile_entered)
+        _mob_popup = self._mobile_completer.popup()
+        _mob_popup.setStyleSheet("QListView { font-size: 14px; } QListView::item { min-height: 30px; padding: 4px 8px; }")
+        _mob_popup.setMinimumWidth(280)
 
         pg.addWidget(w0); pg.addWidget(w1, 1)  # stretch — takes all remaining space
         pg.addWidget(w2); pg.addWidget(w3)
         pg.addWidget(w4); pg.addWidget(w5); pg.addWidget(w6)
 
-        # Address + Remarks row
-        pcard2 = QFrame(); pcard2.setObjectName("card")
-        pg2 = QHBoxLayout(pcard2); pg2.setContentsMargins(14,6,14,6); pg2.setSpacing(14)
         wa, self.addr_edit = _lfield("Patient Address", "Full address of patient")
-        
-        wr = QWidget(); wr.setStyleSheet("background:transparent")
-        vlr = QVBoxLayout(wr); vlr.setContentsMargins(0,0,0,0); vlr.setSpacing(2)
-        rlbl = QLabel("REMARKS / NOTES")
-        rlbl.setStyleSheet(f"color:{TM};font-size:{f11}px;font-weight:700;letter-spacing:1px;background:transparent")
-        from PyQt6.QtWidgets import QTextEdit
-        self.remarks_edit = QTextEdit()
-        self.remarks_edit.setPlaceholderText("Any additional clinical notes or remarks")
-        self.remarks_edit.setFixedHeight(int(40 * sc))
-        self.remarks_edit.setStyleSheet(f"font-size:{f13}px;font-weight:700;color:{TP};padding:{p8}px {p12}px;border:1px solid {BORDER};border-radius:8px;background:{BG_INPUT};")
-        vlr.addWidget(rlbl); vlr.addWidget(self.remarks_edit)
-
-        pg2.addWidget(wa, 2); pg2.addWidget(wr, 1) # Remarks takes less space
+        pg.addWidget(wa, 2)
         root.addWidget(pcard)
-        root.addWidget(pcard2)
 
         # ── Items mini-header ──────────────────────────────────
         items_hdr = QHBoxLayout(); items_hdr.setSpacing(8)
         items_lbl = QLabel("BILL ITEMS")
         items_lbl.setStyleSheet(
             f"color:{TM};font-size:{f14}px;font-weight:700;letter-spacing:1.5px;background:transparent")
+        
         items_hdr.addWidget(items_lbl); items_hdr.addStretch()
         btn_add_row = QPushButton("＋  Add Item")
         btn_del_row = QPushButton("✕  Remove"); btn_del_row.setObjectName("red")
@@ -1440,18 +1446,28 @@ class BillingTab(QWidget):
         # ── Items table — STRETCH to fill all remaining space ──
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["#","Description","Pack / Unit","Rate (₹)","Qty"])
+        self.table.setHorizontalHeaderLabels(["#","Description","Unit","Rate (₹)","Total (₹)"])
         hh = self.table.horizontalHeader()
-        hh.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         for col in [0,2,3,4]: hh.setSectionResizeMode(col, QHeaderView.ResizeMode.Fixed)
-        self.table.setColumnWidth(0,40); self.table.setColumnWidth(2,130)
-        self.table.setColumnWidth(3,125); self.table.setColumnWidth(4,80)
+        hh.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.table.setColumnWidth(0, 38)
+        self.table.setColumnWidth(2, 90)
+        self.table.setColumnWidth(3, 120)
+        self.table.setColumnWidth(4, 130)
         self.table.setAlternatingRowColors(True)
         self.table.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.table.setStyleSheet(
+            "QTableWidget::item:selected { background: #1a3a5c; color: white; }"
+            "QTableWidget::item:focus { border: 2px solid #00c8ff; background: #0d2137; color: white; }"
+            "QTableWidget { gridline-color: #2a3a4a; }"
+        )
         self.table.itemChanged.connect(lambda _: self._recalc())
         self.table.verticalHeader().setVisible(False)
-        root.addWidget(self.table, 1)   # ← stretch factor keeps table large
+        root.addWidget(self.table, 1)
+        self.table.installEventFilter(self)
+        self.table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
 
         # ── Totals strip + Net amount ──────────────────────────
         bot = QHBoxLayout(); bot.setSpacing(10)
@@ -1463,10 +1479,10 @@ class BillingTab(QWidget):
             w = QWidget(); w.setStyleSheet("background:transparent")
             vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(3)
             lbl = QLabel(label.upper())
-            lbl.setStyleSheet(f"color:{TP};font-size:{f11}px;font-weight:800;letter-spacing:0.8px;background:transparent")
+            lbl.setStyleSheet(f"color:#1a1a2e;font-size:{f14}px;font-weight:900;letter-spacing:1px;background:transparent")
             fw = max(70, int(fixed_w * sc))
             f = QLineEdit(); f.setReadOnly(True); f.setFixedWidth(fw)
-            f.setStyleSheet(f"font-size:{f13}px;font-weight:700;color:{TP};padding:{p8}px {p12}px;")
+            f.setStyleSheet(f"font-size:{f14}px;font-weight:700;color:{TP};padding:{p8}px {p12}px;")
             vl.addWidget(lbl); vl.addWidget(f)
             return w, f
 
@@ -1474,10 +1490,10 @@ class BillingTab(QWidget):
             w = QWidget(); w.setStyleSheet("background:transparent")
             vl = QVBoxLayout(w); vl.setContentsMargins(0,0,0,0); vl.setSpacing(3)
             lbl = QLabel(label.upper())
-            lbl.setStyleSheet(f"color:{TP};font-size:{f11}px;font-weight:800;letter-spacing:0.8px;background:transparent")
+            lbl.setStyleSheet(f"color:#1a1a2e;font-size:{f14}px;font-weight:900;letter-spacing:1px;background:transparent")
             fw = max(70, int(fixed_w * sc))
             f = QLineEdit(); f.setPlaceholderText(placeholder); f.setFixedWidth(fw)
-            f.setStyleSheet(f"font-size:{f13}px;font-weight:700;color:{TP};padding:{p8}px {p12}px;")
+            f.setStyleSheet(f"font-size:{f14}px;font-weight:700;color:{TP};padding:{p8}px {p12}px;")
             vl.addWidget(lbl); vl.addWidget(f)
             return w, f
 
@@ -1486,9 +1502,9 @@ class BillingTab(QWidget):
         wd = QWidget(); wd.setStyleSheet("background:transparent")
         vld = QVBoxLayout(wd); vld.setContentsMargins(0,0,0,0); vld.setSpacing(2)
         lbl_d = QLabel("DISCOUNT %")
-        lbl_d.setStyleSheet(f"color:{TP};font-size:{f11}px;font-weight:800;letter-spacing:0.8px;background:transparent")
+        lbl_d.setStyleSheet(f"color:#1a1a2e;font-size:{f14}px;font-weight:900;letter-spacing:1px;background:transparent")
         self.disc_edit = QLineEdit("0"); self.disc_edit.setFixedWidth(max(55, int(85 * sc)))
-        self.disc_edit.setStyleSheet(f"font-size:{f13}px;font-weight:700;color:{TP};padding:{p8}px {p12}px;")
+        self.disc_edit.setStyleSheet(f"font-size:{f14}px;font-weight:700;color:{TP};padding:{p8}px {p12}px;")
         self.disc_edit.textChanged.connect(self._recalc)
         vld.addWidget(lbl_d); vld.addWidget(self.disc_edit)
 
@@ -1498,20 +1514,20 @@ class BillingTab(QWidget):
         wpm = QWidget(); wpm.setStyleSheet("background:transparent")
         vlpm = QVBoxLayout(wpm); vlpm.setContentsMargins(0,0,0,0); vlpm.setSpacing(2)
         lbl_pm = QLabel("PAYMENT MODE")
-        lbl_pm.setStyleSheet(f"color:{TP};font-size:{f11}px;font-weight:800;letter-spacing:0.8px;background:transparent")
+        lbl_pm.setStyleSheet(f"color:#1a1a2e;font-size:{f14}px;font-weight:900;letter-spacing:1px;background:transparent")
         from PyQt6.QtWidgets import QComboBox
-        self.pay_mode = QComboBox(); self.pay_mode.addItems(["Cash","UPI","Cash + UPI","Other"])
+        self.pay_mode = QComboBox(); self.pay_mode.addItems(["Cash","UPI","Cash + UPI","Card","Online"])
         self.pay_mode.setFixedWidth(max(100, int(145 * sc)))
         self.pay_mode.setStyleSheet(f"""
             QComboBox {{
-                font-size:{f13}px;font-weight:700;color:{TP};
+                font-size:{f14}px;font-weight:700;color:{TP};
                 padding:{p8}px {p12}px;border:1px solid {BORDER};
                 border-radius:8px;background:{BG_INPUT};
             }}
             QComboBox:focus {{ border:1.5px solid {ACCENT}; }}
             QComboBox::drop-down {{ border:none;width:24px; }}
             QComboBox QAbstractItemView {{
-                font-size:{f13}px;font-weight:700;color:{TP};
+                font-size:{f14}px;font-weight:700;color:{TP};
                 background:{BG_CARD};border:1.5px solid {ACCENT};
                 selection-background-color:{ACCENT};selection-color:white;
             }}
@@ -1528,7 +1544,7 @@ class BillingTab(QWidget):
         netcard = QFrame(); netcard.setObjectName("netcard")
         nl = QVBoxLayout(netcard); nl.setContentsMargins(12,6,12,6); nl.setSpacing(0)
         net_lbl = QLabel("NET AMOUNT")
-        net_lbl.setStyleSheet(f"font-size:{f12}px;font-weight:700;color:{GREEN};"
+        net_lbl.setStyleSheet(f"font-size:{f14}px;font-weight:900;color:{GREEN};"
                                f"letter-spacing:2px;background:transparent")
         net_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.net_display = QLabel("₹ 0.00")
@@ -1540,7 +1556,93 @@ class BillingTab(QWidget):
         bot.addWidget(netcard, 1)
         root.addLayout(bot)
 
+        # ── Bottom Action Row: Remarks + Buttons ──────────────────
+        action_card = QFrame(); action_card.setObjectName("card")
+        al = QHBoxLayout(action_card); al.setContentsMargins(max(8,int(14*sc)),max(6,int(12*sc)),max(8,int(14*sc)),max(6,int(12*sc))); al.setSpacing(max(8,int(15*sc)))
+
+        # Remarks in the bottom strip
+        rem_w = QWidget(); rem_w.setStyleSheet("background:transparent")
+        rl = QVBoxLayout(rem_w); rl.setContentsMargins(0,0,0,0); rl.setSpacing(4)
+        rlbl = QLabel("REMARKS / NOTES")
+        rlbl.setStyleSheet(f"color:#1a1a2e;font-size:{f14}px;font-weight:900;letter-spacing:1px;background:transparent")
+        self.remarks_edit = QTextEdit()
+        self.remarks_edit.setPlaceholderText("Additional clinical notes...")
+        self.remarks_edit.setFixedHeight(max(38, int(45 * sc)))
+        self.remarks_edit.setStyleSheet(f"font-size:{max(14, int(18*sc))}px;color:{TP};padding:{p8}px;border:1px solid {BORDER};border-radius:8px;background:{BG_INPUT};")
+        rl.addWidget(rlbl); rl.addWidget(self.remarks_edit)
+        al.addWidget(rem_w, 2)
+
+        # Action Buttons
+        btn_grid = QGridLayout(); btn_grid.setSpacing(10)
+        self.btn_new     = QPushButton("＋  NEW");    self.btn_new.setObjectName("blue")
+        self.btn_preview = QPushButton("👁  PREVIEW");    self.btn_preview.setObjectName("grey")
+        self.btn_save    = QPushButton("✔  SAVE");   self.btn_save.setObjectName("accent")
+
+        btns = [self.btn_new, self.btn_preview, self.btn_save]
+        for b in btns:
+            b.setCursor(Qt.CursorShape.PointingHandCursor)
+            b.setFixedHeight(max(38, int(45*sc))); b.setMinimumWidth(max(80, int(100*sc)))
+            b.setStyleSheet(f"font-size:{f13}px; font-weight:800;")
+        
+        btn_grid.addWidget(self.btn_save, 0, 0)
+
+        self.btn_save.clicked.connect(self._save)
+
+        al.addLayout(btn_grid, 1)
+        root.addWidget(action_card)
+
     # ── Helpers ──────────────────────────────────────────────
+    def _focus_col(self, r, c):
+        self.table.setCurrentCell(r, c)
+        w = self.table.cellWidget(r, c)
+        if w:
+            child = w if isinstance(w, QLineEdit) else w.findChild(QLineEdit)
+            if child:
+                child.setFocus(); child.selectAll(); return
+        item = self.table.item(r, c)
+        if item:
+            self.table.editItem(item)
+
+    def eventFilter(self, obj, event):
+        from PyQt6.QtCore import QEvent
+        if obj is self.table and event.type() == QEvent.Type.KeyPress:
+            key = event.key()
+            from PyQt6.QtCore import Qt as Qt2
+            cur = self.table.currentItem()
+            if cur is None:
+                return super().eventFilter(obj, event)
+            r, c = cur.row(), cur.column()
+
+            # ── TAB: cycle Description→Unit→Rate→wrap to next row Description ──
+            if key == Qt2.Key.Key_Tab:
+                tab_order = [1, 2, 3]
+                if c in tab_order:
+                    idx = tab_order.index(c)
+                    if idx + 1 < len(tab_order):
+                        next_c = tab_order[idx + 1]
+                        self.table.setCurrentCell(r, next_c)
+                        self.table.editItem(self.table.item(r, next_c))
+                    else:
+                        # After Rate → wrap to Description of next row
+                        next_r = r + 1
+                        if next_r < self.table.rowCount():
+                            self._focus_col(next_r, 1)
+                        else:
+                            self._add_row()
+                            self._focus_col(self.table.rowCount() - 1, 1)
+                else:
+                    self._focus_col(r, 1)
+                return True
+
+            # ── ENTER: on Unit(2), Rate(3), Total(4) → add new row ──
+            # Description col(1) excluded — Enter there types normally
+            elif key in (Qt2.Key.Key_Return, Qt2.Key.Key_Enter) and c in [2, 3, 4]:
+                self._add_row()
+                self._focus_col(self.table.rowCount() - 1, 1)
+                return True
+
+        return super().eventFilter(obj, event)
+
     def _add_row(self, data=None):
         self.table.blockSignals(True)
         r = self.table.rowCount(); self.table.insertRow(r)
@@ -1555,37 +1657,181 @@ class BillingTab(QWidget):
         prod_edit.setStyleSheet(
             f"background:{BG_INPUT};border:none;color:{TP};"
             f"font-size:14px;padding:5px 10px;border-radius:0")
-        names = [p[1] for p in get_all_products()]
-        comp = QCompleter(names, prod_edit)
-        comp.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        comp.setFilterMode(Qt.MatchFlag.MatchContains)
-        prod_edit.setCompleter(comp)
+
+        # ── Instant catalogue popup ──────────────────────────────────────
+        from PyQt6.QtWidgets import QListWidget, QListWidgetItem, QFrame
+        from PyQt6.QtCore import QPoint, QTimer
+
+        all_products = get_all_products()
+
+        # Parent to top-level window, use Tool flag — never steals focus
+        _top = self.window()
+        cat_popup = QListWidget(_top)
+        cat_popup.setWindowFlags(
+            Qt.WindowType.Tool |
+            Qt.WindowType.FramelessWindowHint |
+            Qt.WindowType.NoDropShadowWindowHint
+        )
+        cat_popup.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
+        cat_popup.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        cat_popup.setFrameShape(QFrame.Shape.Box)
+        cat_popup.setStyleSheet(f"""
+            QListWidget {{
+                background:{BG_INPUT};
+                border:2px solid {ACCENT};
+                font-size:14px;
+                color:{TP};
+                outline:none;
+            }}
+            QListWidget::item {{
+                padding:7px 12px;
+                border-bottom:1px solid {BORDER};
+            }}
+            QListWidget::item:selected, QListWidget::item:hover {{
+                background:{ACCENT};
+                color:#fff;
+            }}
+        """)
+        cat_popup.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        cat_popup.hide()
+
+        _popup_active = [False]   # mutable flag to block premature hide
+
+        def _populate(filter_txt=""):
+            cat_popup.clear()
+            txt = filter_txt.strip().lower()
+            for pid, name, pack, price, cat in all_products:
+                if txt and txt not in name.lower():
+                    continue
+                display = f"{name}  —  ₹{price:.2f}" if price else name
+                it = QListWidgetItem(display)
+                it.setData(Qt.ItemDataRole.UserRole, name)
+                cat_popup.addItem(it)
+
+        def _show_popup():
+            _populate(prod_edit.text())
+            if cat_popup.count() == 0:
+                cat_popup.hide(); return
+            gpos = prod_edit.mapToGlobal(QPoint(0, prod_edit.height()))
+            w = max(prod_edit.width(), 340)
+            h = min(cat_popup.count() * 36 + 8, 400)
+            cat_popup.setGeometry(gpos.x(), gpos.y(), w, h)
+            cat_popup.show()
+            cat_popup.raise_()
+
+        def _safe_hide():
+            # Only hide if focus truly left both the edit and popup area
+            if not prod_edit.hasFocus() and not _popup_active[0]:
+                cat_popup.hide()
+
+        def _on_text_changed(txt):
+            _populate(txt)
+            if cat_popup.count() > 0:
+                _show_popup()
+            else:
+                cat_popup.hide()
+
+        def _on_item_selected(list_item):
+            name = list_item.data(Qt.ItemDataRole.UserRole)
+            _popup_active[0] = False
+            cat_popup.hide()
+            prod_edit.blockSignals(True)
+            prod_edit.setText(name)
+            prod_edit.blockSignals(False)
+            fill(name)
+            prod_edit.setFocus()
+            self.table.setCurrentCell(r, 2)
+            self.table.editItem(self.table.item(r, 2))
+
+        cat_popup.itemClicked.connect(_on_item_selected)
+        prod_edit.textChanged.connect(_on_text_changed)
+
+        # Track mouse press on popup to prevent premature hide
+        _orig_mouse = cat_popup.mousePressEvent
+        def _popup_mouse(ev):
+            _popup_active[0] = True
+            _orig_mouse(ev)
+        cat_popup.mousePressEvent = _popup_mouse
+
+        def _on_focus_out(event):
+            QLineEdit.focusOutEvent(prod_edit, event)
+            QTimer.singleShot(250, _safe_hide)
+
+        prod_edit.focusOutEvent = _on_focus_out
 
         def fill(name, row=r):
             p = get_product_by_name(name)
             if p:
                 self.table.blockSignals(True)
-                self._sc(row,2,p.get("pack_size",""))
+                self._sc(row,2,"1")
                 self._sc(row,3,str(p.get("price",0)))
-                self._sc(row,4,"1")
+                # Calc product total (Unit * Rate)
+                try: 
+                    tot = float(p.get("price",0)) * 1.0
+                    self._sc(row,4,f"{tot:.2f}")
+                except: self._sc(row,4,"0.00")
                 self.table.blockSignals(False)
                 self._recalc()
 
         prod_edit.textChanged.connect(lambda t: fill(t) if get_product_by_name(t) else None)
-        comp.activated.connect(fill)
+
+        # Tab from Description → Unit (col 2), Enter in Description → select top item or move to Unit
+        def _prod_tab(event, row=r):
+            from PyQt6.QtCore import Qt as Qt3
+            if event.key() == Qt3.Key.Key_Tab:
+                cat_popup.hide()
+                self.table.setCurrentCell(row, 2)
+                self.table.editItem(self.table.item(row, 2))
+            elif event.key() in (Qt3.Key.Key_Return, Qt3.Key.Key_Enter):
+                # If popup is visible and has a selection, pick it
+                if cat_popup.isVisible() and cat_popup.currentItem():
+                    _on_item_selected(cat_popup.currentItem())
+                elif cat_popup.isVisible() and cat_popup.count() > 0:
+                    _on_item_selected(cat_popup.item(0))
+                else:
+                    cat_popup.hide()
+                    self.table.setCurrentCell(row, 2)
+                    self.table.editItem(self.table.item(row, 2))
+            elif event.key() == Qt3.Key.Key_Down:
+                # Arrow down: navigate into the popup
+                if cat_popup.isVisible() and cat_popup.count() > 0:
+                    cur = cat_popup.currentRow()
+                    cat_popup.setCurrentRow(min(cur + 1, cat_popup.count() - 1))
+                else:
+                    QLineEdit.keyPressEvent(prod_edit, event)
+            elif event.key() == Qt3.Key.Key_Up:
+                if cat_popup.isVisible() and cat_popup.count() > 0:
+                    cur = cat_popup.currentRow()
+                    cat_popup.setCurrentRow(max(cur - 1, 0))
+                else:
+                    QLineEdit.keyPressEvent(prod_edit, event)
+            elif event.key() == Qt3.Key.Key_Escape:
+                cat_popup.hide()
+            else:
+                QLineEdit.keyPressEvent(prod_edit, event)
+        prod_edit.keyPressEvent = _prod_tab
+
         self.table.setCellWidget(r, 1, prod_edit)
 
-        for c, v in enumerate(["","0","1"], 2):
+        for c, v in enumerate(["1","0", "0.00"], 2):
             it = QTableWidgetItem(v); it.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            if c == 4: it.setFlags(Qt.ItemFlag.ItemIsEnabled) # Total column is read-only
             self.table.setItem(r, c, it)
 
         if data:
+            prod_edit.blockSignals(True)
             prod_edit.setText(data.get("product",""))
-            self._sc(r,2,data.get("pack_size",""))
+            prod_edit.blockSignals(False)
+            self._sc(r,2,data.get("qty",1))
             self._sc(r,3,str(data.get("rate",0)))
-            self._sc(r,4,str(data.get("qty",1)))
+            try:
+                rt = float(data.get('rate',0))
+                ut = float(data.get('qty',1))
+                self._sc(r,4,f"{(rt*ut):.2f}")
+            except: self._sc(r,4,"0.00")
 
-        self.table.setRowHeight(r,45); self.table.blockSignals(False); self._recalc()
+        row_h = max(48, int(52 * UI_SCALE))
+        self.table.setRowHeight(r, row_h); self.table.blockSignals(False); self._recalc()
 
     def _sc(self, r, c, val):
         it = self.table.item(r, c)
@@ -1593,6 +1839,22 @@ class BillingTab(QWidget):
         else:
             it = QTableWidgetItem(str(val)); it.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.table.setItem(r, c, it)
+
+    def _add_row_after(self, after_row=None):
+        """Add a new row after after_row (or at end if None), then focus its Description."""
+        if after_row is None:
+            after_row = self.table.rowCount() - 1
+        self._add_row()
+        # Move new row (always appended) to after_row+1 position by swapping
+        # Simpler: just add at end and focus it
+        new_r = self.table.rowCount() - 1
+        self.table.setCurrentCell(new_r, 1)
+        w = self.table.cellWidget(new_r, 1)
+        if w:
+            w.setFocus()
+            w.selectAll()
+        else:
+            self.table.editItem(self.table.item(new_r, 1))
 
     def _del_row(self):
         row = self.table.currentRow()
@@ -1609,14 +1871,18 @@ class BillingTab(QWidget):
             w = self.table.cellWidget(r,1); pname = w.text() if w else ""
             def cell(c, row=r):
                 it = self.table.item(row,c); return it.text() if it else ""
+            try: unit=float(cell(2))
+            except: unit=0
             try: rate=float(cell(3))
             except: rate=0
-            try: qty=float(cell(4))
-            except: qty=0
-            base=qty*rate
+            base=unit*rate
             sub+=base
-            items.append({"product":pname,"pack_size":cell(2),
-                          "qty":qty,"rate":rate,"amount":base})
+            # Update the Total column in UI (col index 4)
+            self.table.blockSignals(True)
+            self._sc(r, 4, f"{base:.2f}")
+            self.table.blockSignals(False)
+            items.append({"product":pname,"qty":unit,
+                          "rate":rate,"amount":base})
         try: dp=max(0.0,min(100.0,float(self.disc_edit.text())))
         except: dp=0.0
         da=sub*dp/100; after=sub-da
@@ -1638,7 +1904,7 @@ class BillingTab(QWidget):
             "invoice_no":      self.invoice_no,
             "date":            self.date_edit.text(),
             "patient_id":      self.current_patient_id,
-            "patient_name":    self.patient_edit.text(),
+            "patient_name":    self.patient_edit.text().strip().title(),
             "patient_age":     self.age_edit.text(),
             "patient_gender":  self.gender_edit.text(),
             "patient_phone":   self.phone_edit.text(),
@@ -1662,9 +1928,19 @@ class BillingTab(QWidget):
         self.disc_amt_f.setText(f"{d['discount_amt']:.2f}")
         self.payable_f.setText(f"{d['payable_amt']:.2f}")
         self.net_display.setText(f"₹ {d['net_amount']:.2f}")
+        
+        # Auto-fill Paid Amt: always sync to net_amount (net drives paid)
+        self.paid_edit.blockSignals(True)
+        self.paid_edit.setText(f"{d['net_amount']:.2f}")
+        self.paid_edit.blockSignals(False)
 
     def _recalc_payment(self):
-        self._recalc()
+        # Called when user edits paid_edit — just recollect without overwriting paid_edit
+        d = self._collect(); self._current_data = d
+        self.subtotal_f.setText(f"{d['subtotal']:.2f}")
+        self.disc_amt_f.setText(f"{d['discount_amt']:.2f}")
+        self.payable_f.setText(f"{d['payable_amt']:.2f}")
+        self.net_display.setText(f"₹ {d['net_amount']:.2f}")
 
     def _reset(self):
         self.table.blockSignals(True); self.table.setRowCount(0); self.table.blockSignals(False)
@@ -1846,41 +2122,70 @@ class BillingTab(QWidget):
 
     def _save(self):
         d = self._collect()
-        if not d["patient_name"].strip():
-            QMessageBox.warning(self,"Missing Info","Please enter patient name."); return
-        
+
+        # ── Field validation ─────────────────────────────────────────
+        missing = []
+        if not d["patient_name"].strip():    missing.append("Patient Name")
+        if not d["patient_age"].strip():     missing.append("Age")
+        if not d["patient_gender"].strip():  missing.append("Gender")
+        if not d["patient_phone"].strip():   missing.append("Mobile")
+
+        if missing:
+            QMessageBox.warning(self, "Missing Information",
+                "Please fill in the following required fields:\n\n• " + "\n• ".join(missing))
+            return
+
+        # ── Items / amount validation ─────────────────────────────────
+        has_items = any(row["product"].strip() for row in d["items"])
+        if not has_items or d["net_amount"] == 0:
+            QMessageBox.warning(self, "No Items Added",
+                "Net amount is ₹0 — no items have been added.\n\nPlease add at least one item before saving.")
+            return
+
         # Ensure patient exists and get ID BEFORE saving invoice
-        # This is CRITICAL for balance updates
         pid = upsert_patient_from_invoice(d)
         d["patient_id"] = pid
         self.current_patient_id = pid
         
+        # Ask to print or just save
+        from PyQt6.QtWidgets import QMessageBox as QMsg
+        msg = QMsg(self)
+        msg.setWindowTitle("Confirm Save")
+        msg.setText(f"Save invoice {d['invoice_no']}?")
+        btn_print_save = msg.addButton("Save & Print", QMsg.ButtonRole.ActionRole)
+        btn_just_save  = msg.addButton("Just Save",    QMsg.ButtonRole.ActionRole)
+        btn_cancel     = msg.addButton("Cancel",        QMsg.ButtonRole.RejectRole)
+        msg.exec()
+        
+        if msg.clickedButton() == btn_cancel:
+            return
+
+        do_print = (msg.clickedButton() == btn_print_save)
+
         if self.current_invoice_id:
-            from PyQt6.QtWidgets import QMessageBox as QMsg
             m = QMsg(self)
             m.setWindowTitle("Update or Save New?")
             m.setText(f"Invoice {d['invoice_no']} already exists.\nDo you want to update the existing record or save it as a new invoice?")
-            btn_update = m.addButton("Update Existing", QMsg.ButtonRole.ActionRole)
-            btn_new    = m.addButton("Save as New",    QMsg.ButtonRole.ActionRole)
-            btn_cancel = m.addButton("Cancel",         QMsg.ButtonRole.RejectRole)
+            btn_update  = m.addButton("Update Existing", QMsg.ButtonRole.ActionRole)
+            btn_new     = m.addButton("Save as New",     QMsg.ButtonRole.ActionRole)
+            btn_cancel2 = m.addButton("Cancel",          QMsg.ButtonRole.RejectRole)
             m.exec()
             
             if m.clickedButton() == btn_update:
                 update_invoice(d, self.current_invoice_id)
-                QMessageBox.information(self,"✔  Updated",f"Invoice {d['invoice_no']} updated!")
             elif m.clickedButton() == btn_new:
-                # Force a new invoice number when saving a copy as new
                 d["invoice_no"] = next_invoice_no()
                 save_invoice(d)
-                QMessageBox.information(self,"✔  Saved",f"New invoice {d['invoice_no']} saved!")
             else:
-                return # Cancelled
+                return
         else:
             save_invoice(d)
-            QMessageBox.information(self,"✔  Saved",f"Invoice {d['invoice_no']} saved!")
+
+        if do_print:
+            self._print()
 
         self.invoice_saved.emit()
-        self.patient_db_updated.emit()   # notify patients tab
+        self.patient_db_updated.emit()
         self._reset()
 
     def _export_pdf(self):
@@ -1907,7 +2212,7 @@ class BillingTab(QWidget):
                 f"Saved — Original Copy on A5:\n{self._pdf_path}")
             try:
                 if platform.system() == "Windows":
-                    os.startfile(self._pdf_path)
+                    import subprocess; subprocess.Popen(["cmd", "/c", "start", "", self._pdf_path], shell=False)
                 elif platform.system() == "Darwin":
                     os.system(f'open "{self._pdf_path}"')
             except:
@@ -1936,7 +2241,7 @@ class BillingTab(QWidget):
         def _open(path):
             try:
                 if platform.system() == "Windows":
-                    os.startfile(tmp)
+                    import subprocess; subprocess.Popen(["cmd", "/c", "start", "", tmp], shell=False)
                 elif platform.system() == "Darwin":
                     os.system(f'open "{tmp}"')
                 else:
@@ -2020,7 +2325,7 @@ class BillingTab(QWidget):
             self._cleanup_web(web)
             try:
                 if platform.system() == "Windows":
-                    os.startfile(tmp)
+                    import subprocess; subprocess.Popen(["cmd", "/c", "start", "", tmp], shell=False)
                 elif platform.system() == "Darwin":
                     os.system(f'open "{tmp}"')
                 else:
@@ -2241,7 +2546,7 @@ class HistoryTab(QWidget):
 
         # ── Search + action buttons ──────────────────────────────
         top = QHBoxLayout(); top.setSpacing(8)
-        self.search = QLineEdit(); self.search.setPlaceholderText("🔍  Search by patient name or invoice number…")
+        self.search = QLineEdit(); self.search.setPlaceholderText("🔍  Search by patient name, invoice number or receipt ID…")
         self.search.textChanged.connect(self._search_filter)
         btn_r  = QPushButton("↺  Refresh");       btn_r.setFixedHeight(34); btn_r.clicked.connect(self.load_data)
         btn_xl = QPushButton("📊  Excel");         btn_xl.setObjectName("green");  btn_xl.setFixedHeight(34)
@@ -2254,15 +2559,15 @@ class HistoryTab(QWidget):
         l.addLayout(top)
 
         # ── Table ──────────────────────────────────────────────
-        self.table = QTableWidget(); self.table.setColumnCount(8)
+        self.table = QTableWidget(); self.table.setColumnCount(9)
         self.table.setHorizontalHeaderLabels(
-            ["ID", "Invoice No.", "Date", "Patient ID", "Patient Name", "Mobile", "Net Amount", "Actions"])
+            ["#", "Invoice No", "Receipt ID", "Date", "Patient ID", "Name", "Phone", "Amount", "Actions"])
         hh = self.table.horizontalHeader()
-        hh.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)   # Patient Name stretches
-        for col in [0, 1, 2, 3, 5, 6]:
+        hh.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)   # Patient Name stretches
+        for col in [0, 1, 2, 3, 4, 6, 7]:
             hh.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
-        hh.setSectionResizeMode(7, QHeaderView.ResizeMode.Interactive)
-        self.table.setColumnWidth(7, 130)
+        hh.setSectionResizeMode(8, QHeaderView.ResizeMode.Interactive)
+        self.table.setColumnWidth(8, 130)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.verticalHeader().setVisible(False)
@@ -2408,7 +2713,9 @@ class HistoryTab(QWidget):
         txt = self.search.text().lower()
         if txt:
             filtered = [x for x in filtered
-                        if txt in str(x[1]).lower() or txt in str(x[3]).lower()]
+                        if txt in str(x[1]).lower()          # invoice no
+                        or txt in str(x[3]).lower()          # patient name
+                        or txt in f"rct{str(x[0]).zfill(3)}"]  # receipt id
         self._show(filtered)
 
     def _search_filter(self, txt):
@@ -2435,19 +2742,31 @@ class HistoryTab(QWidget):
         self.table.setRowCount(len(data))
         total = 0.0
         # row tuple: (id, invoice_no, date, patient_id, patient_name, phone, net_amount)
-        AMT_COL = 6   # 0-indexed column for net_amount in the tuple
-        PID_COL = 3   # patient_id column in tuple
+        # Table columns: #(0), Invoice No(1), Receipt ID(2), Date(3), Patient ID(4), Name(5), Phone(6), Amount(7), Actions(8)
+        AMT_COL_TUPLE = 6   # net_amount index in the DB tuple
+        PID_COL_TUPLE = 3   # patient_id index in the DB tuple
         for r, inv in enumerate(data):
-            for c, v in enumerate(inv):
-                t = f"₹ {float(v):.2f}" if c == AMT_COL else str(v) if v else "—"
+            # Build the receipt_id from global DB row id (never resets on year change)
+            try:
+                row_id = inv[0]  # DB primary key — global sequential, never resets
+                receipt_id_val = f"RCT{str(row_id).zfill(3)}"
+            except:
+                receipt_id_val = "—"
+            # Build display row: insert receipt_id after invoice_no
+            # inv tuple: (id, invoice_no, date, patient_id, patient_name, phone, net_amount)
+            display_row = [inv[0], inv[1], receipt_id_val, inv[2], inv[3], inv[4], inv[5], inv[6]]
+            for c, v in enumerate(display_row):
+                t = f"₹ {float(v):.2f}" if c == 7 else str(v) if v else "—"
                 it = QTableWidgetItem(t)
                 it.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                if c == AMT_COL:
+                if c == 7:  # Amount column
                     it.setForeground(QColor(GREEN))
-                    try: total += float(v)
+                    try: total += float(inv[6])
                     except: pass
-                elif c == PID_COL and v:
+                elif c == 4 and v:  # Patient ID column
                     it.setForeground(QColor(ACCENT))   # patient ID in accent colour
+                elif c == 2:  # Receipt ID column
+                    it.setForeground(QColor(TM))  # receipt ID in teal
                 self.table.setItem(r, c, it)
             
             # ── Actions Widget ──
@@ -2482,7 +2801,7 @@ class HistoryTab(QWidget):
             b_print.clicked.connect(_hprint)
             
             al.addWidget(b_pdf); al.addWidget(b_print)
-            self.table.setCellWidget(r, 7, act_w)
+            self.table.setCellWidget(r, 8, act_w)
             
             self.table.setRowHeight(r, 50)
         n = len(data)
@@ -2616,10 +2935,10 @@ class PatientsTab(QWidget):
         # Fixed-width columns: Patient ID, Age, Gender, Phone
         for col in [0, 2, 3, 4]:
             hh.setSectionResizeMode(col, QHeaderView.ResizeMode.Fixed)
-        self.table.setColumnWidth(0, 90)
-        self.table.setColumnWidth(2, 50)
-        self.table.setColumnWidth(3, 70)
-        self.table.setColumnWidth(4, 110)
+        self.table.setColumnWidth(0, 130)
+        self.table.setColumnWidth(2, 60)
+        self.table.setColumnWidth(3, 80)
+        self.table.setColumnWidth(4, 150)
         # Stretch: Name (1), Email (5), Address (6) — fill remaining space equally
         hh.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         hh.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
@@ -2841,7 +3160,13 @@ def main():
     screen = app.primaryScreen()
     screen_w = screen.availableGeometry().width()
     screen_h = screen.availableGeometry().height()
-    scale = max(0.75, min(1.0, screen_w / 1920))
+    # 1366px → 0.85,  1920px → 1.0,  anything below 1366 → 0.85 min
+    if screen_w >= 1920:
+        scale = 1.0
+    elif screen_w >= 1366:
+        scale = 0.85 + (screen_w - 1366) / (1920 - 1366) * 0.15
+    else:
+        scale = 0.85
     global UI_SCALE
     UI_SCALE = scale
     app.setStyleSheet(build_stylesheet(scale))
