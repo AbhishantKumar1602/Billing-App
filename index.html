@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ScreenWise Billing — Professional Billing Software | ArNova Solution</title>
+<title>ScreenWise Billing — Professional Offline Billing Software | ArNova Solutions</title>
 <meta name="description" content="Complete offline billing software for clinics, shops, and businesses. PDF invoices, patient management, Excel reports. One-time ₹14,000. No monthly fees."/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
 <style>
@@ -29,9 +29,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .nav-cta{background:var(--blue)!important;color:#fff!important;padding:7px 18px;border-radius:7px;font-weight:500}
 .nav-cta:hover{background:var(--blue-d)!important}
 
-/* ── TICKER ── */
-.ticker{background:linear-gradient(90deg,var(--blue),#7c3aed,var(--blue));padding:9px 0;text-align:center;font-size:0.82rem;font-weight:500;letter-spacing:0.03em;margin-top:56px}
-.ticker span{opacity:0.8;margin:0 24px}
+/* ── ANIMATED TICKER ── */
+.ticker-wrap{background:linear-gradient(90deg,var(--blue),#7c3aed,var(--blue));padding:9px 0;overflow:hidden;margin-top:56px;white-space:nowrap}
+.ticker-inner{display:inline-flex;animation:tickerScroll 32s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-set{display:inline-flex}
+.ticker-item{display:inline-block;font-size:0.82rem;font-weight:500;letter-spacing:0.03em;padding:0 32px;opacity:0.9}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ── HERO ── */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 24px 80px;position:relative;overflow:hidden}
@@ -339,6 +343,74 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
   footer{flex-direction:column;text-align:center}
   .stats-row{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ── FEATURE BENEFIT LINE ── */
+.fbenefit{margin-top:12px;font-size:.75rem;color:#6ee7b7;font-weight:500}
+
+/* ── AFTER PURCHASE PROCESS ── */
+.after-wrap{max-width:900px;margin:0 auto}
+.after-hdr{text-align:center;margin-bottom:52px}
+.after-hdr .ssub{margin:10px auto 0}
+.after-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
+.after-steps::before{content:'';position:absolute;top:28px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--blue),#7c3aed);z-index:0;opacity:.3}
+.after-step{text-align:center;padding:0 8px;position:relative;z-index:1}
+.after-num{width:56px;height:56px;background:linear-gradient(135deg,rgba(26,86,219,.25),rgba(26,86,219,.1));border:1px solid rgba(26,86,219,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#60a5fa;margin:0 auto 14px}
+.after-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:6px}
+.after-desc{font-size:.78rem;color:rgba(255,255,255,.42);line-height:1.6}
+
+/* ── GUARANTEE ── */
+.guarantee-strip{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.03));border:1px solid rgba(16,185,129,.22);border-radius:16px;padding:28px 40px;max-width:860px;margin:48px auto 0;display:flex;align-items:center;gap:28px}
+.g-shield{font-size:2.5rem;flex-shrink:0}
+.g-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:#6ee7b7;margin-bottom:5px}
+.g-desc{font-size:.84rem;color:rgba(255,255,255,.48);line-height:1.65}
+
+/* ── PAYMENT METHODS ── */
+.payment-methods{max-width:860px;margin:28px auto 0;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.pay-label{font-size:.78rem;color:rgba(255,255,255,.3)}
+.pay-pill{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:6px;padding:5px 14px;font-size:.76rem;color:rgba(255,255,255,.45)}
+.pcard-note{margin-top:12px;font-size:.73rem;color:rgba(255,255,255,.3);text-align:center;line-height:1.5}
+
+/* ── FOUNDER ── */
+.founder-wrap{max-width:720px;margin:0 auto}
+.founder-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:36px 40px;display:flex;align-items:flex-start;gap:28px}
+.founder-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#7c3aed);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.1)}
+.founder-tag{display:inline-block;font-size:.72rem;background:rgba(26,86,219,.12);border:1px solid rgba(26,86,219,.3);color:#93c5fd;border-radius:50px;padding:2px 12px;margin-bottom:8px}
+.founder-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;margin-bottom:3px}
+.founder-role{font-size:.8rem;color:var(--muted);margin-bottom:14px}
+.founder-text{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.75}
+.founder-text strong{color:rgba(255,255,255,.75)}
+
+/* ── SUPPORT BANNER ── */
+.support-banner{background:rgba(26,86,219,.07);border:1px solid rgba(26,86,219,.16);border-radius:12px;padding:16px 24px;max-width:600px;margin:20px auto 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sb-icon{font-size:1.4rem;flex-shrink:0}
+.sb-text{flex:1}
+.sb-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:2px}
+.sb-sub{font-size:.78rem;color:rgba(255,255,255,.42)}
+
+/* ── SIMULATION ── */
+.sim-tab{padding:5px 12px;font-size:.72rem;color:#64748b;border-bottom:2px solid transparent;cursor:default;transition:all .3s}
+.active-tab{color:#1a56db;border-bottom-color:#1a56db;font-weight:600}
+.sim-screen{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.sim-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .4s}
+.active-dot{background:#1a56db;transform:scale(1.3)}
+.sim-cursor{display:inline-block;width:1px;background:#1a56db;animation:blink .7s infinite;margin-left:1px;vertical-align:text-bottom;height:1em}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.sim-item-row{animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── CONTACT CTA UPDATES ── */
+.contact .cinfo{margin-top:24px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:380px;margin-left:auto;margin-right:auto}
+.contact .cinfo-i{font-size:.8rem;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:8px 12px}
+
+@media(max-width:768px){
+  .after-steps{grid-template-columns:repeat(2,1fr)}
+  .after-steps::before{display:none}
+  .founder-card{flex-direction:column;gap:18px}
+  .guarantee-strip{flex-direction:column;text-align:center;padding:24px}
+  .contact .cinfo{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -351,18 +423,38 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
     <a href="#screenshots">Demo</a>
     <a href="#compare">Compare</a>
     <a href="#pricing">Pricing</a>
+    <a href="#after-purchase">After Purchase</a>
     <a href="#faq">FAQ</a>
-    <a href="#contact" class="nav-cta">Get Started</a>
+    <a href="#contact" class="nav-cta">Free Demo</a>
   </div>
 </nav>
 
-<!-- TICKER -->
-<div class="ticker">
-  <span>✦ Fully Offline — No Internet Needed</span>
-  <span>✦ One-Time Payment — No Monthly Fees</span>
-  <span>✦ Works on Any Windows PC</span>
-  <span>✦ Professional PDF Invoices</span>
-  <span>✦ Auto Advance &amp; Due Settlement</span>
+<!-- ANIMATED TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-set">
+      <span class="ticker-item">✦ Fully Offline — No Internet Needed</span>
+      <span class="ticker-item">✦ One-Time Payment — No Monthly Fees</span>
+      <span class="ticker-item">✦ GST-Ready Invoices Included</span>
+      <span class="ticker-item">✦ Save ₹42,000+ in First Year vs Monthly SaaS</span>
+      <span class="ticker-item">✦ Auto Advance &amp; Due Settlement</span>
+      <span class="ticker-item">✦ Custom Branding with Your Clinic Logo</span>
+      <span class="ticker-item">✦ Same-Day Setup &amp; Installation</span>
+      <span class="ticker-item">✦ Free Demo — No Payment Required</span>
+      <span class="ticker-item">✦ Your Data Stays on YOUR PC — 100% Private</span>
+    </div>
+    <div class="ticker-set" aria-hidden="true">
+      <span class="ticker-item">✦ Fully Offline — No Internet Needed</span>
+      <span class="ticker-item">✦ One-Time Payment — No Monthly Fees</span>
+      <span class="ticker-item">✦ GST-Ready Invoices Included</span>
+      <span class="ticker-item">✦ Save ₹42,000+ in First Year vs Monthly SaaS</span>
+      <span class="ticker-item">✦ Auto Advance &amp; Due Settlement</span>
+      <span class="ticker-item">✦ Custom Branding with Your Clinic Logo</span>
+      <span class="ticker-item">✦ Same-Day Setup &amp; Installation</span>
+      <span class="ticker-item">✦ Free Demo — No Payment Required</span>
+      <span class="ticker-item">✦ Your Data Stays on YOUR PC — 100% Private</span>
+    </div>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -370,11 +462,11 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
-    <div class="badge"><div class="dot-live"></div>Trusted by clinics &amp; businesses across India</div>
-    <h1>Stop Losing Money<br/><span class="accent">to Manual Billing</span><br/><span class="dim">Fix it Today.</span></h1>
-    <p class="hero-sub">A complete offline billing system for clinics, shops &amp; businesses. Professional PDF invoices, patient records, Excel reports — all in one EXE file. No internet. No subscription. Forever yours.</p>
+    <div class="badge"><div class="dot-live"></div>Actively used by clinics in Jaipur, Rajasthan</div>
+    <h1>Professional Billing<br/><span class="accent">Made Simple</span><br/><span class="dim">For Indian Businesses.</span></h1>
+    <p class="hero-sub">A complete offline billing system for clinics, shops &amp; businesses. GST-ready PDF invoices, patient records, Excel reports — all in one EXE file. No internet. No subscription. Forever yours.</p>
     <div class="hero-actions">
-      <a href="https://wa.me/919878675654" class="btn-wa" target="_blank">
+      <a href="https://wa.me/919929321602?text=Hi%2C%20I%20want%20a%20free%20demo%20of%20ScreenWise%20Billing" class="btn-wa" target="_blank">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp for Free Demo
       </a>
@@ -387,10 +479,10 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
       <div class="trust-pill"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Your data stays with you</div>
     </div>
     <div class="stats-row">
-      <div class="stat"><div class="stat-n">2,950<em>+</em></div><div class="stat-l">Lines of code</div></div>
-      <div class="stat"><div class="stat-n">130<em>+</em></div><div class="stat-l">Functions built</div></div>
-      <div class="stat"><div class="stat-n">6<em> modules</em></div><div class="stat-l">Fully integrated</div></div>
-      <div class="stat"><div class="stat-n">1<em> file</em></div><div class="stat-l">Single EXE</div></div>
+      <div class="stat"><div class="stat-n">5<em>+</em></div><div class="stat-l">Happy Businesses</div></div>
+      <div class="stat"><div class="stat-n" style="font-size:1.3rem">Same<em> Day</em></div><div class="stat-l">Setup & Go Live</div></div>
+      <div class="stat"><div class="stat-n">₹42k<em>+</em></div><div class="stat-l">Avg. 1st-Year Savings</div></div>
+      <div class="stat"><div class="stat-n">&#x20B9;0<em>/mo</em></div><div class="stat-l">No Monthly Fee, Ever</div></div>
     </div>
   </div>
 </section>
@@ -472,15 +564,174 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
   <div class="feat-hdr reveal">
     <div class="slabel">What's Inside</div>
     <div class="stitle">Every Feature You Need</div>
-    <p class="ssub" style="margin:10px auto 0">Six fully integrated modules — database, invoicing, search, reports, and more.</p>
+    <p class="ssub" style="margin:10px auto 0">Six fully integrated modules — everything works together, right out of the box.</p>
   </div>
-  <div class="fgrid reveal">
-    <div class="fcard"><div class="ficon">🗄️</div><div class="fname">Database &amp; Management</div><div class="fdesc">4-table SQLite database with indexed queries. Auto-migration upgrades DB without losing data. Advance &amp; due balance tracking per customer forever.</div><div class="ftool">sqlite3 · PRAGMA indexing · Atomic transactions</div></div>
-    <div class="fcard"><div class="ficon">📄</div><div class="fname">PDF Invoice Generator</div><div class="fdesc">Professional A4 invoice with your clinic logo, itemised table, discount, totals, and Amount in Words (Indian system — lakhs &amp; crores). Direct Print + Save PDF.</div><div class="ftool">PyQt6 WebEngine · HTML5 + CSS3</div></div>
-    <div class="fcard"><div class="ficon">⚖️</div><div class="fname">Auto Balance Settlement</div><div class="fdesc">Customer advance and due auto-adjusts in every new bill. Overpaid last time? Balance carries forward automatically. Never manually track dues again.</div><div class="ftool">Atomic DB transactions · Balance delta logic</div></div>
-    <div class="fcard"><div class="ficon">🔍</div><div class="fname">Multi-Search &amp; Autocomplete</div><div class="fdesc">Live search across name, mobile, and customer ID at once. Autocomplete updates as you type. History: filter by date, month, or free text simultaneously.</div><div class="ftool">QCompleter · Cross-DB joins · Qt Signals</div></div>
-    <div class="fcard"><div class="ficon">📊</div><div class="fname">Excel Export &amp; Reports</div><div class="fdesc">Export invoices and customer list to formatted .xlsx with styled headers, borders, auto column widths. Works with your active date filter — export exactly what you see.</div><div class="ftool">openpyxl · PatternFill · Border · Font</div></div>
-    <div class="fcard"><div class="ficon">📦</div><div class="fname">Single EXE — Zero Setup</div><div class="fdesc">Runs on any Windows PC with no Python, no installation. Logo baked inside EXE. Database auto-stored next to the file. Scales for 1366px to 1920px screens.</div><div class="ftool">PyInstaller --onefile · base64 embedding</div></div>
+    <div class="fgrid reveal">
+    <div class="fcard"><div class="ficon">🧾</div><div class="fname">GST-Ready Invoices</div><div class="fdesc">Generate GST-compliant invoices with GSTIN, HSN/SAC codes, CGST/SGST breakdowns. Print-ready A4 format with your clinic logo — accepted by accountants and tax authorities.</div><div class="fbenefit">✓ Stay tax-compliant with zero extra effort</div></div>
+    <div class="fcard"><div class="ficon">🗄️</div><div class="fname">Customer Database</div><div class="fdesc">All customer records stored securely on your PC. Track each patient's history, advance balance, and due amount — forever, without any manual effort.</div><div class="fbenefit">✓ Never lose a customer record again</div></div>
+    <div class="fcard"><div class="ficon">⚖️</div><div class="fname">Auto Balance Settlement</div><div class="fdesc">Customer advance and due auto-adjusts in every new bill. Overpaid last time? Balance carries forward automatically. You never manually track dues again.</div><div class="fbenefit">✓ Zero rupee leakage, guaranteed</div></div>
+    <div class="fcard"><div class="ficon">📄</div><div class="fname">PDF Invoice Generator</div><div class="fdesc">Professional A4 invoice with your clinic logo, itemised table, discount, totals, and Amount in Words (Indian system — lakhs &amp; crores). Print or save in one click.</div><div class="fbenefit">✓ Impress patients with branded invoices</div></div>
+    <div class="fcard"><div class="ficon">📊</div><div class="fname">Excel Export &amp; Reports</div><div class="fdesc">Export invoices and customer list to a formatted Excel sheet with one click. Share with your accountant or keep records for tax filing — no manual data entry needed.</div><div class="fbenefit">✓ Save 2+ hours of accountant work monthly</div></div>
+    <div class="fcard"><div class="ficon">🔒</div><div class="fname">Data Backup & Safety</div><div class="fdesc">Your data lives in a single file on your PC — copy it to a pen drive or Google Drive in seconds. If your PC is replaced or Windows reinstalled, all records restore instantly.</div><div class="fbenefit">✓ Your data can never be lost or leaked</div></div>
+  </div>
+</section>
+
+<!-- EXPLORE ALL SCREENS -->
+<section class="sec-pad screenshots" id="explore">
+  <div style="max-width:1000px;margin:0 auto">
+
+    <!-- STATIC TABS — all screens -->
+    <div class="reveal">
+      <div style="text-align:center;margin-bottom:32px">
+        <div class="slabel">Every Screen</div>
+        <div class="stitle">Explore Each Tab of the App</div>
+        <p class="ssub" style="margin:8px auto 0">Click any tab to see the real software screen from The PhysioRehab, Jaipur.</p>
+      </div>
+      <div class="demo-tabs">
+        <button class="dtab on" onclick="showTab(this,'billing')">🧾 New Invoice</button>
+        <button class="dtab" onclick="showTab(this,'history')">📋 History</button>
+        <button class="dtab" onclick="showTab(this,'patients')">👥 Patients</button>
+        <button class="dtab" onclick="showTab(this,'catalogue')">📦 Catalogue</button>
+        <button class="dtab" onclick="showTab(this,'pdf')">📄 PDF Invoice</button>
+      </div>
+
+      <!-- BILLING -->
+      <div class="dpanel on" id="tab-billing">
+        <div class="demo-label">Billing screen — patient search, bill items, discount, payment mode, auto advance/due settlement</div>
+        <div class="dwin">
+          <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
+          <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt on">✦ New Invoice</span><span class="dwt">⊟ History</span><span class="dwt">👤 Patients</span><span class="dwt">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
+          <div class="dwbody">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-weight:700;font-size:.88rem;color:#1e293b">✦ New Invoice &nbsp;<span style="color:#1a56db;font-size:.76rem">IN-001</span></div><div style="display:flex;gap:6px"><span class="dwabtn" style="background:#f1f5f9;color:#475569">＋ New</span><span class="dwabtn" style="background:#1a56db;color:#fff">⬡ Preview</span><span class="dwabtn" style="background:#16a34a;color:#fff">✓ Save</span><span class="dwabtn" style="background:#f59e0b;color:#fff">⬇ PDF</span><span class="dwabtn" style="background:#f1f5f9;color:#475569">🖨 Print</span></div></div>
+            <div class="dwfields">
+              <div class="dwf" style="flex:.7"><div class="dwfl">Patient ID</div><div class="dwfv">TPRC01</div></div>
+              <div class="dwf" style="flex:3"><div class="dwfl">Patient Name</div><div class="dwfv">Arpit Kumar</div></div>
+              <div class="dwf" style="flex:.6"><div class="dwfl">Age</div><div class="dwfv">23</div></div>
+              <div class="dwf" style="flex:.6"><div class="dwfl">Gender</div><div class="dwfv">M</div></div>
+              <div class="dwf" style="flex:1"><div class="dwfl">Mobile</div><div class="dwfv">9878XXX654</div></div>
+              <div class="dwf" style="flex:1.2"><div class="dwfl">Email</div><div class="dwfv"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="83e2f1f3eaf7c3e6fbe2eef3efe6ade0ecee">[email&#160;protected]</a></div></div>
+              <div class="dwf" style="flex:.7"><div class="dwfl">Date</div><div class="dwfv">01-02-2026</div></div>
+            </div>
+            <div class="dwfields"><div class="dwf" style="flex:3"><div class="dwfl">Patient Address</div><div class="dwfv">Bharatpur, Raj</div></div><div class="dwf" style="flex:3"><div class="dwfl">Remarks / Notes</div><div class="dwfv" style="color:#94a3b8">Any additional clinical notes...</div></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 6px"><div style="font-weight:700;font-size:.76rem;color:#1e293b">BILL ITEMS</div><div style="display:flex;gap:5px"><span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add Item</span><span class="dwabtn" style="background:#dc2626;color:#fff">✕ Remove</span></div></div>
+            <div class="dwtbl">
+              <div class="dwthead"><span style="flex:.3">#</span><span style="flex:3">DESCRIPTION</span><span style="flex:1">PACK / UNIT</span><span style="flex:1">RATE (₹)</span><span style="flex:.5">QTY</span></div>
+              <div class="dwtr"><span style="flex:.3">1</span><span style="flex:3">Physiotherapy Session</span><span style="flex:1">1 Visit</span><span style="flex:1">700.0</span><span style="flex:.5">1.0</span></div>
+              <div class="dwtr"><span style="flex:.3">2</span><span style="flex:3">Consultation</span><span style="flex:1">1 Session</span><span style="flex:1">500.0</span><span style="flex:.5">1</span></div>
+              <div class="dwtr"><span style="flex:.3">3</span><span style="flex:3">Physiotherapy Package</span><span style="flex:1">1 Pack</span><span style="flex:1">6000.0</span><span style="flex:.5">2</span></div>
+            </div>
+            <div class="dwfstrip">
+              <div class="dwfsf"><div class="dwfsfl">SUBTOTAL</div><div>13200.00</div></div>
+              <div class="dwfsf"><div class="dwfsfl">DISCOUNT %</div><div>10.0</div></div>
+              <div class="dwfsf"><div class="dwfsfl">DISC. AMT</div><div>1320.00</div></div>
+              <div class="dwfsf"><div class="dwfsfl">PAYMENT MODE</div><div>Cash ▾</div></div>
+              <div class="dwfsf"><div class="dwfsfl">PAID AMT</div><div>2000.0</div></div>
+              <div class="dwfsf"><div class="dwfsfl">OLD DUE</div><div style="color:#dc2626">0.00</div></div>
+              <div class="dwfsf"><div class="dwfsfl">OLD ADV</div><div style="color:#16a34a">0.00</div></div>
+              <div class="dwnet"><div class="dwnetl">NET AMOUNT</div><div class="dwnetv">₹ 11,880.00</div><div class="dwduev">DUE ₹ 9,880.00</div></div>
+            </div>
+            <div style="font-size:.62rem;color:#94a3b8;margin-top:5px">© 2026 ArNova Solution</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="dpanel" id="tab-history">
+        <div class="demo-label">Invoice History — filter by month/date, search by name or invoice number, re-PDF or reprint any old invoice</div>
+        <div class="dwin">
+          <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
+          <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt">✦ New Invoice</span><span class="dwt on">⊟ History</span><span class="dwt">👤 Patients</span><span class="dwt">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
+          <div class="dwbody">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="font-weight:700;font-size:.88rem;color:#1e293b">Invoice History</div><div style="background:#dbeafe;color:#1a56db;padding:2px 11px;border-radius:50px;font-size:.72rem;font-weight:600">₹ 6,020.00 | 3 records</div></div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+              <span style="font-size:.72rem;color:#64748b">MONTH</span><div class="dwf" style="padding:4px 9px;font-size:.72rem">All Months ▾</div>
+              <span style="font-size:.72rem;color:#64748b">FROM</span><div class="dwf" style="padding:4px 9px;font-size:.72rem;color:#94a3b8">📅 Any date</div>
+              <span style="font-size:.72rem;color:#64748b">TO</span><div class="dwf" style="padding:4px 9px;font-size:.72rem;color:#94a3b8">📅 Any date</div>
+              <span class="dwabtn" style="background:#1a56db;color:#fff">Apply</span>
+              <span class="dwabtn" style="background:#f1f5f9;color:#475569">Reset</span>
+              <div style="margin-left:auto;display:flex;gap:5px"><span class="dwabtn" style="background:#16a34a;color:#fff">📊 Excel</span><span class="dwabtn" style="background:#1a56db;color:#fff">➜ Open Invoice</span></div>
+            </div>
+            <div class="dwtbl">
+              <div class="dwthead"><span style="flex:.3">ID</span><span style="flex:.8">INV NO.</span><span style="flex:.8">DATE</span><span style="flex:.8">PATIENT ID</span><span style="flex:2">PATIENT NAME</span><span style="flex:1">MOBILE</span><span style="flex:.8">NET AMT</span><span style="flex:1">ACTIONS</span></div>
+              <div class="dwtr"><span style="flex:.3">3</span><span style="flex:.8">IN-003</span><span style="flex:.8">04-03-2026</span><span style="flex:.8;color:#1a56db">TPRC03</span><span style="flex:2">Roshni</span><span style="flex:1">9878XXX654</span><span style="flex:.8;color:#16a34a;font-weight:600">₹2240.00</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+              <div class="dwtr"><span style="flex:.3">2</span><span style="flex:.8">IN-002</span><span style="flex:.8">01-03-2026</span><span style="flex:.8;color:#1a56db">TPRC02</span><span style="flex:2">Vinod Singh</span><span style="flex:1">9664XXX782</span><span style="flex:.8;color:#16a34a;font-weight:600">₹1260.00</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+              <div class="dwtr"><span style="flex:.3">1</span><span style="flex:.8">IN-001</span><span style="flex:.8">01-02-2026</span><span style="flex:.8;color:#1a56db">TPRC01</span><span style="flex:2">Arpit Kumar</span><span style="flex:1">9878XXX654</span><span style="flex:.8;color:#16a34a;font-weight:600">₹2520.00</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PATIENTS -->
+      <div class="dpanel" id="tab-patients">
+        <div class="demo-label">Patient Database — full records with advance &amp; due balance per patient, one-click Excel export</div>
+        <div class="dwin">
+          <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
+          <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt">✦ New Invoice</span><span class="dwt">⊟ History</span><span class="dwt on">👤 Patients</span><span class="dwt">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
+          <div class="dwbody">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="font-weight:700;font-size:.88rem;color:#1e293b">🗂 Patient Database</div><div style="background:#dbeafe;color:#1a56db;padding:2px 11px;border-radius:50px;font-size:.72rem;font-weight:600">3 patients</div></div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+              <div class="dwf" style="flex:1;padding:5px 9px;color:#94a3b8;font-size:.72rem">🔍 Search by name, mobile, email or ID...</div>
+              <span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add Patient</span>
+              <span class="dwabtn" style="background:#f1f5f9;color:#475569">Edit</span>
+              <span class="dwabtn" style="background:#dc2626;color:#fff">✕ Delete</span>
+              <span class="dwabtn" style="background:#16a34a;color:#fff">📊 Excel</span>
+            </div>
+            <div class="dwtbl">
+              <div class="dwthead"><span style="flex:.8">PATIENT ID</span><span style="flex:2">NAME</span><span style="flex:.4">AGE</span><span style="flex:.5">GENDER</span><span style="flex:1">PHONE</span><span style="flex:.8">ADVANCE</span><span style="flex:.8">DUE</span><span style="flex:1.5">ADDRESS</span></div>
+              <div class="dwtr"><span style="flex:.8;color:#1a56db">TPRC01</span><span style="flex:2">Arpit Kumar</span><span style="flex:.4">23</span><span style="flex:.5">M</span><span style="flex:1">99293216...</span><span style="flex:.8;color:#16a34a">₹0</span><span style="flex:.8;color:#dc2626;font-weight:600">₹520.00</span><span style="flex:1.5">Bharatpur, Raj</span></div>
+              <div class="dwtr"><span style="flex:.8;color:#1a56db">TPRC02</span><span style="flex:2">Vinod Singh</span><span style="flex:.4">50</span><span style="flex:.5">M</span><span style="flex:1">96642117...</span><span style="flex:.8;color:#16a34a">₹0</span><span style="flex:.8;color:#dc2626">₹0</span><span style="flex:1.5">Bharatpur, Raj.</span></div>
+              <div class="dwtr"><span style="flex:.8;color:#1a56db">TPRC03</span><span style="flex:2">Roshni</span><span style="flex:.4">45</span><span style="flex:.5">F</span><span style="flex:1">99293216...</span><span style="flex:.8;color:#16a34a;font-weight:600">₹260.00</span><span style="flex:.8;color:#dc2626">₹0</span><span style="flex:1.5">Bharatpur, Raj.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATALOGUE -->
+      <div class="dpanel" id="tab-catalogue">
+        <div class="demo-label">Product Catalogue — add services &amp; prices once, they auto-fill in billing as you type</div>
+        <div class="dwin">
+          <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
+          <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt">✦ New Invoice</span><span class="dwt">⊟ History</span><span class="dwt">👤 Patients</span><span class="dwt on">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
+          <div class="dwbody">
+            <div style="font-weight:700;font-size:.88rem;color:#1e293b;margin-bottom:3px">⬡ Product Catalogue</div>
+            <div style="font-size:.72rem;color:#64748b;margin-bottom:12px">Manage services &amp; products — they auto-fill in the billing form when you type.</div>
+            <div style="display:flex;gap:6px;margin-bottom:10px"><div class="dwf" style="flex:1;padding:5px 9px;color:#94a3b8;font-size:.72rem">🔍 Search by name, category...</div><span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add</span><span class="dwabtn" style="background:#16a34a;color:#fff">✏ Edit</span><span class="dwabtn" style="background:#dc2626;color:#fff">🗑 Delete</span></div>
+            <div class="dwtbl">
+              <div class="dwthead"><span style="flex:.4">ID</span><span style="flex:3">SERVICE / PRODUCT NAME</span><span style="flex:1">UNIT</span><span style="flex:1">PRICE (₹)</span><span style="flex:2">CATEGORY</span></div>
+              <div class="dwtr"><span style="flex:.4">1</span><span style="flex:3">Physiotherapy Session</span><span style="flex:1">1 Visit</span><span style="flex:1;color:#16a34a;font-weight:600">700.00</span><span style="flex:2">Physiotherapy</span></div>
+              <div class="dwtr"><span style="flex:.4">2</span><span style="flex:3">Consultation</span><span style="flex:1">1 Session</span><span style="flex:1;color:#16a34a;font-weight:600">500.00</span><span style="flex:2">Consultation</span></div>
+              <div class="dwtr"><span style="flex:.4">3</span><span style="flex:3">Physiotherapy Package</span><span style="flex:1">1 Pack</span><span style="flex:1;color:#16a34a;font-weight:600">6000.00</span><span style="flex:2">Physiotherapy</span></div>
+              <div class="dwtr"><span style="flex:.4">4</span><span style="flex:3">Ultrasound Therapy</span><span style="flex:1">1 Session</span><span style="flex:1;color:#16a34a;font-weight:600">350.00</span><span style="flex:2">Therapy</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF -->
+      <div class="dpanel" id="tab-pdf">
+        <div class="demo-label">Generated PDF Invoice — professional A4 with clinic logo, itemised table, GST, Amount in Words</div>
+        <div class="dwin">
+          <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">Invoice Preview — IN-001.pdf</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
+          <div class="pdf-wrap">
+            <div class="pdf-header">
+              <div><div class="pdf-clinic">THE PHYSIOREHAB</div><div style="font-size:.68rem;color:#374151;line-height:1.6;margin-top:3px">65, Udai Nagar-A, Nirman Nagar<br/>Near Mansarovar Metro Station<br/>Jaipur, Rajasthan - 302019</div></div>
+              <div class="pdf-logo">🏥</div>
+              <div class="pdf-dr"><strong>Dr. Upendra Agrawal (PT)</strong><br/>Mob.: 9828600634<br/>www.thephysiorehab.com</div>
+            </div>
+            <div class="pdf-meta"><div><div>INVOICE NUMBER</div><div>IN-001</div></div><div><div>PATIENT ID</div><div>TPRC01</div></div><div><div>DATE</div><div>01-02-2026</div></div><div><div>GST INVOICE</div><div>✓ Compliant</div></div></div>
+            <div class="pdf-patient"><strong>Mr. Arpit Kumar</strong>, 23 yrs, Male, +91 9878XXX654, Address: Bharatpur, Raj</div>
+            <table class="pdf-tbl"><tr><th>#</th><th>DESCRIPTION</th><th style="text-align:right">RATE (₹)</th><th style="text-align:center">QTY</th><th style="text-align:center">DISCOUNT</th><th style="text-align:right">TOTAL (₹)</th></tr><tr><td>1</td><td>Physiotherapy Session</td><td style="text-align:right">₹700.00</td><td style="text-align:center">1</td><td style="text-align:center">0%</td><td style="text-align:right">₹700.00</td></tr><tr><td>2</td><td>Physiotherapy Session ×3</td><td style="text-align:right">₹700.00</td><td style="text-align:center">3</td><td style="text-align:center">10%</td><td style="text-align:right">₹1890.00</td></tr></table>
+            <div class="pdf-bottom">
+              <div class="pdf-rcpt"><table class="pdf-rcpttbl"><tr><th>RECEIPT NO.</th><th>MODE</th><th>AMOUNT PAID</th><th>ADVANCE USED</th><th>DUE AMOUNT</th></tr><tr><td>RCT-001</td><td>Cash</td><td>₹2000.00</td><td>₹0.00</td><td>₹520.00</td></tr></table></div>
+              <div class="pdf-tots"><div class="pdf-tots-row"><span>Subtotal</span><span>₹2800.00</span></div><div class="pdf-tots-row" style="color:#dc2626"><span>Discount</span><span>−₹280.00</span></div><div class="pdf-net"><span>NET AMOUNT</span><span>₹2520.00</span></div><div class="pdf-adv"><span>Amount Received</span><span>₹2000.00</span></div><div class="pdf-due"><span>Due Amount</span><span>₹520.00</span></div></div>
+            </div>
+            <div style="margin-top:10px;font-size:.66rem;color:#374151;font-style:italic">Two Thousand Five Hundred Twenty Rupees Only</div>
+            <div style="text-align:right;margin-top:10px;font-size:.66rem;color:#64748b"><span style="border-top:1px solid #9ca3af;display:inline-block;padding-top:4px;min-width:110px">Authorised Sign.</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /reveal -->
   </div>
 </section>
 
@@ -488,193 +739,201 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
 <section class="sec-pad screenshots" id="screenshots">
   <div class="scr-hdr reveal">
     <div class="slabel">Live App Demo</div>
-    <div class="stitle">Real Screenshots — Actual App</div>
-    <p class="ssub" style="margin:10px auto 0">Every tab from the live app running at The PhysioRehab, Jaipur.</p>
+    <div class="stitle">Watch It Work — Live</div>
+    <p class="ssub" style="margin:10px auto 0">Auto-playing simulation of the real software. Filling a patient bill from scratch in real time.</p>
   </div>
   <div class="demo-wrap reveal">
-    <div class="demo-tabs">
-      <button class="dtab on" onclick="showTab(this,'billing')">🧾 New Invoice</button>
-      <button class="dtab" onclick="showTab(this,'history')">📋 History</button>
-      <button class="dtab" onclick="showTab(this,'patients')">👥 Patients</button>
-      <button class="dtab" onclick="showTab(this,'catalogue')">📦 Catalogue</button>
-      <button class="dtab" onclick="showTab(this,'pdf')">📄 PDF Invoice</button>
-    </div>
-    <!-- BILLING -->
-    <div class="dpanel on" id="tab-billing">
-      <div class="demo-label">Billing screen — patient search, bill items, discount, payment mode, auto advance/due settlement</div>
-      <div class="dwin">
-        <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
-        <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt on">✦ New Invoice</span><span class="dwt">⊟ History</span><span class="dwt">👤 Patients</span><span class="dwt">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
-        <div class="dwbody">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-weight:700;font-size:.88rem;color:#1e293b">✦ New Invoice &nbsp;<span style="color:#1a56db;font-size:.76rem">IN-001</span></div><div style="display:flex;gap:6px"><span class="dwabtn" style="background:#f1f5f9;color:#475569">＋ New</span><span class="dwabtn" style="background:#1a56db;color:#fff">⬡ Preview</span><span class="dwabtn" style="background:#16a34a;color:#fff">✓ Save</span><span class="dwabtn" style="background:#f59e0b;color:#fff">⬇ PDF</span><span class="dwabtn" style="background:#f1f5f9;color:#475569">🖨 Print</span></div></div>
-          <div class="dwfields">
-            <div class="dwf" style="flex:.7"><div class="dwfl">Patient ID</div><div class="dwfv">TPRC01</div></div>
-            <div class="dwf" style="flex:3"><div class="dwfl">Patient Name</div><div class="dwfv">Arpit Kumar</div></div>
-            <div class="dwf" style="flex:.6"><div class="dwfl">Age</div><div class="dwfv">23</div></div>
-            <div class="dwf" style="flex:.6"><div class="dwfl">Gender</div><div class="dwfv">M</div></div>
-            <div class="dwf" style="flex:1"><div class="dwfl">Mobile</div><div class="dwfv">9878675654</div></div>
-            <div class="dwf" style="flex:1.2"><div class="dwfl">Email</div><div class="dwfv">arpit@gmail.com</div></div>
-            <div class="dwf" style="flex:.7"><div class="dwfl">Date</div><div class="dwfv">01-02-2026</div></div>
-          </div>
-          <div class="dwfields"><div class="dwf" style="flex:3"><div class="dwfl">Patient Address</div><div class="dwfv">Bharatpur, Raj</div></div><div class="dwf" style="flex:3"><div class="dwfl">Remarks / Notes</div><div class="dwfv" style="color:#94a3b8">Any additional clinical notes...</div></div></div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 6px"><div style="font-weight:700;font-size:.76rem;color:#1e293b">BILL ITEMS</div><div style="display:flex;gap:5px"><span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add Item</span><span class="dwabtn" style="background:#dc2626;color:#fff">✕ Remove</span></div></div>
-          <div class="dwtbl">
-            <div class="dwthead"><span style="flex:.3">#</span><span style="flex:3">DESCRIPTION</span><span style="flex:1">PACK / UNIT</span><span style="flex:1">RATE (₹)</span><span style="flex:.5">QTY</span></div>
-            <div class="dwtr"><span style="flex:.3">1</span><span style="flex:3">Physiotherapy Session</span><span style="flex:1">1 Visit</span><span style="flex:1">700.0</span><span style="flex:.5">1.0</span></div>
-            <div class="dwtr"><span style="flex:.3">2</span><span style="flex:3">Consultation</span><span style="flex:1">1 Session</span><span style="flex:1">500.0</span><span style="flex:.5">1</span></div>
-            <div class="dwtr"><span style="flex:.3">3</span><span style="flex:3">Physiotherapy Package</span><span style="flex:1">1 Pack</span><span style="flex:1">6000.0</span><span style="flex:.5">2</span></div>
-          </div>
-          <div class="dwfstrip">
-            <div class="dwfsf"><div class="dwfsfl">SUBTOTAL</div><div>13200.00</div></div>
-            <div class="dwfsf"><div class="dwfsfl">DISCOUNT %</div><div>10.0</div></div>
-            <div class="dwfsf"><div class="dwfsfl">DISC. AMT</div><div>1320.00</div></div>
-            <div class="dwfsf"><div class="dwfsfl">PAYMENT MODE</div><div>Cash ▾</div></div>
-            <div class="dwfsf"><div class="dwfsfl">PAID AMT</div><div>2000.0</div></div>
-            <div class="dwfsf"><div class="dwfsfl">OLD DUE</div><div style="color:#dc2626">0.00</div></div>
-            <div class="dwfsf"><div class="dwfsfl">OLD ADV</div><div style="color:#16a34a">0.00</div></div>
-            <div class="dwnet"><div class="dwnetl">NET AMOUNT</div><div class="dwnetv">₹ 11,880.00</div><div class="dwduev">DUE ₹ 9,880.00</div></div>
-          </div>
-          <div style="font-size:.62rem;color:#94a3b8;margin-top:5px">© 2026 ArNova Solution</div>
-        </div>
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+
+      <!-- Title bar -->
+      <div style="background:#e2e8f0;padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #cbd5e1">
+        <div style="display:flex;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:inline-block"></span><span style="width:11px;height:11px;border-radius:50%;background:#ffbd2e;display:inline-block"></span><span style="width:11px;height:11px;border-radius:50%;background:#28c941;display:inline-block"></span></div>
+        <div style="flex:1;text-align:center;font-size:.72rem;color:#64748b" id="sim-title">THE PHYSIOREHAB — Billing Software</div>
+        <div style="font-size:.72rem;color:#94a3b8;display:flex;gap:8px"><span>−</span><span>□</span><span>×</span></div>
       </div>
-    </div>
-    <!-- HISTORY -->
-    <div class="dpanel" id="tab-history">
-      <div class="demo-label">Invoice History — filter by month/date, search by name or invoice number, re-PDF or reprint any old invoice</div>
-      <div class="dwin">
-        <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
-        <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt">✦ New Invoice</span><span class="dwt on">⊟ History</span><span class="dwt">👤 Patients</span><span class="dwt">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
-        <div class="dwbody">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="font-weight:700;font-size:.88rem;color:#1e293b">Invoice History</div><div style="background:#dbeafe;color:#1a56db;padding:2px 11px;border-radius:50px;font-size:.72rem;font-weight:600">₹ 6,020.00 | 3 records</div></div>
-          <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
-            <span style="font-size:.72rem;color:#64748b">MONTH</span><div class="dwf" style="padding:4px 9px;font-size:.72rem">All Months ▾</div>
-            <span style="font-size:.72rem;color:#64748b">FROM</span><div class="dwf" style="padding:4px 9px;font-size:.72rem;color:#94a3b8">📅 Any date</div>
-            <span style="font-size:.72rem;color:#64748b">TO</span><div class="dwf" style="padding:4px 9px;font-size:.72rem;color:#94a3b8">📅 Any date</div>
-            <span class="dwabtn" style="background:#1a56db;color:#fff">Apply</span>
-            <span class="dwabtn" style="background:#f1f5f9;color:#475569">Reset</span>
-            <div style="margin-left:auto;display:flex;gap:5px"><span class="dwabtn" style="background:#16a34a;color:#fff">📊 Excel</span><span class="dwabtn" style="background:#1a56db;color:#fff">➜ Open Invoice</span></div>
-          </div>
-          <div class="dwtbl">
-            <div class="dwthead"><span style="flex:.3">ID</span><span style="flex:.8">INV NO.</span><span style="flex:.8">DATE</span><span style="flex:.8">PATIENT ID</span><span style="flex:2">PATIENT NAME</span><span style="flex:1">MOBILE</span><span style="flex:.8">NET AMT</span><span style="flex:1">ACTIONS</span></div>
-            <div class="dwtr"><span style="flex:.3">3</span><span style="flex:.8">IN-003</span><span style="flex:.8">04-03-2026</span><span style="flex:.8;color:#1a56db">TPRC03</span><span style="flex:2">Roshni</span><span style="flex:1">9878675654</span><span style="flex:.8;color:#16a34a;font-weight:600">₹2240.00</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
-            <div class="dwtr"><span style="flex:.3">2</span><span style="flex:.8">IN-002</span><span style="flex:.8">01-03-2026</span><span style="flex:.8;color:#1a56db">TPRC02</span><span style="flex:2">Vinod Singh</span><span style="flex:1">9664211782</span><span style="flex:.8;color:#16a34a;font-weight:600">₹1260.00</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
-            <div class="dwtr"><span style="flex:.3">1</span><span style="flex:.8">IN-001</span><span style="flex:.8">01-02-2026</span><span style="flex:.8;color:#1a56db">TPRC01</span><span style="flex:2">Arpit Kumar</span><span style="flex:1">9878675654</span><span style="flex:.8;color:#16a34a;font-weight:600">₹2520.00</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 5px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
-          </div>
-          <div style="font-size:.62rem;color:#94a3b8;margin-top:6px">© 2026 ArNova Solution</div>
+
+      <!-- App top bar -->
+      <div style="background:#fff;padding:7px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e2e8f0">
+        <div style="font-size:.85rem;font-weight:800;color:#1a56db">⬡ THE PHYSIOREHAB</div>
+        <div style="display:flex" id="sim-tabs">
+          <span class="sim-tab active-tab">✦ New Invoice</span>
+          <span class="sim-tab">⊟ History</span>
+          <span class="sim-tab">👤 Patients</span>
+          <span class="sim-tab">＋ Catalogue</span>
         </div>
+        <div style="font-size:.72rem;color:#f59e0b;font-weight:700">⚡ ArNova</div>
       </div>
-    </div>
-    <!-- PATIENTS -->
-    <div class="dpanel" id="tab-patients">
-      <div class="demo-label">Patient Database — full records with advance &amp; due balance per patient, one-click Excel export</div>
-      <div class="dwin">
-        <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
-        <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt">✦ New Invoice</span><span class="dwt">⊟ History</span><span class="dwt on">👤 Patients</span><span class="dwt">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
-        <div class="dwbody">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="font-weight:700;font-size:.88rem;color:#1e293b">🗂 Patient Database</div><div style="background:#dbeafe;color:#1a56db;padding:2px 11px;border-radius:50px;font-size:.72rem;font-weight:600">3 patients</div></div>
-          <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
-            <div class="dwf" style="flex:1;padding:5px 9px;color:#94a3b8;font-size:.72rem">🔍 Search by name, mobile, email or ID...</div>
-            <span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add Patient</span>
-            <span class="dwabtn" style="background:#f1f5f9;color:#475569">Edit</span>
-            <span class="dwabtn" style="background:#dc2626;color:#fff">✕ Delete</span>
-            <span class="dwabtn" style="background:#16a34a;color:#fff">📊 Excel</span>
+
+      <!-- Body — screens -->
+      <div style="background:#fff;padding:16px;min-height:320px;position:relative">
+
+        <!-- SCREEN 1: Billing -->
+        <div id="sim-screen-billing" class="sim-screen">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div style="font-weight:700;font-size:.88rem;color:#1e293b">✦ New Invoice &nbsp;<span style="color:#1a56db;font-size:.76rem">IN-047</span></div>
+            <div style="display:flex;gap:6px">
+              <span class="dwabtn" style="background:#f1f5f9;color:#475569">＋ New</span>
+              <span class="dwabtn sim-btn-save" style="background:#16a34a;color:#fff" id="sim-save-btn">✓ Save</span>
+              <span class="dwabtn" style="background:#f59e0b;color:#fff">⬇ PDF</span>
+              <span class="dwabtn" style="background:#f1f5f9;color:#475569">🖨 Print</span>
+            </div>
+          </div>
+          <!-- Fields row 1 -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px">
+            <div class="dwf" style="flex:.7"><div class="dwfl">Patient ID</div><div class="dwfv" id="sf-id" style="color:#94a3b8">—</div></div>
+            <div class="dwf" style="flex:3;position:relative"><div class="dwfl">Patient Name</div><div class="dwfv" id="sf-name" style="min-height:14px"><span class="sim-cursor">|</span></div>
+              <div id="sim-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:6px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                <div style="padding:6px 10px;font-size:.76rem;color:#1e293b;display:flex;align-items:center;gap:8px;background:#dbeafe;border-radius:5px"><span style="color:#1a56db;font-weight:700">TPRC04</span> Ravi Sharma <span style="font-size:.65rem;color:#64748b;margin-left:auto">Adv: ₹500</span></div>
+              </div>
+            </div>
+            <div class="dwf" style="flex:.6"><div class="dwfl">Age</div><div class="dwfv" id="sf-age" style="color:#94a3b8">—</div></div>
+            <div class="dwf" style="flex:.7"><div class="dwfl">Mobile</div><div class="dwfv" id="sf-mobile" style="color:#94a3b8">—</div></div>
+            <div class="dwf" style="flex:.8"><div class="dwfl">Date</div><div class="dwfv">11-03-2026</div></div>
+          </div>
+          <!-- advance badge -->
+          <div id="sim-adv-badge" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:5px 12px;font-size:.75rem;color:#16a34a;font-weight:600;margin-bottom:8px">✓ Advance Balance Found: ₹500 — will auto-adjust in this bill</div>
+          <!-- Bill items table -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 5px">
+            <div style="font-weight:700;font-size:.76rem;color:#1e293b">BILL ITEMS</div>
+            <div style="display:flex;gap:5px">
+              <span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add Item</span>
+              <span class="dwabtn" style="background:#dc2626;color:#fff">✕ Remove</span>
+            </div>
           </div>
           <div class="dwtbl">
-            <div class="dwthead"><span style="flex:.8">PATIENT ID</span><span style="flex:2">NAME</span><span style="flex:.4">AGE</span><span style="flex:.5">GENDER</span><span style="flex:1">PHONE</span><span style="flex:.8">ADVANCE</span><span style="flex:.8">DUE</span><span style="flex:1.5">EMAIL</span><span style="flex:1.5">ADDRESS</span></div>
-            <div class="dwtr"><span style="flex:.8;color:#1a56db">TPRC01</span><span style="flex:2">Arpit Kumar</span><span style="flex:.4">23</span><span style="flex:.5">M</span><span style="flex:1">99293216...</span><span style="flex:.8"></span><span style="flex:.8;color:#dc2626;font-weight:600">₹520.00</span><span style="flex:1.5">arpit@gmail.com</span><span style="flex:1.5">Bharatpur, Raj</span></div>
-            <div class="dwtr"><span style="flex:.8;color:#1a56db">TPRC02</span><span style="flex:2">Vinod Singh</span><span style="flex:.4">50</span><span style="flex:.5">M</span><span style="flex:1">96642117...</span><span style="flex:.8"></span><span style="flex:.8"></span><span style="flex:1.5">Vinod@gmail.com</span><span style="flex:1.5">Bharatpur, Raj.</span></div>
-            <div class="dwtr"><span style="flex:.8;color:#1a56db">TPRC03</span><span style="flex:2">Roshni</span><span style="flex:.4">45</span><span style="flex:.5">F</span><span style="flex:1">99293216...</span><span style="flex:.8;color:#16a34a;font-weight:600">₹260.00</span><span style="flex:.8"></span><span style="flex:1.5">Roshni@gmail.com</span><span style="flex:1.5">Bharatpur, Raj.</span></div>
+            <div class="dwthead"><span style="flex:.3">#</span><span style="flex:3">DESCRIPTION</span><span style="flex:1">UNIT</span><span style="flex:1">RATE (₹)</span><span style="flex:.5">QTY</span></div>
+            <div class="dwtr sim-item-row" id="sim-row-1" style="display:none"><span style="flex:.3">1</span><span style="flex:3" id="sim-item1-name"></span><span style="flex:1">1 Visit</span><span style="flex:1">700.00</span><span style="flex:.5">1</span></div>
+            <div class="dwtr sim-item-row" id="sim-row-2" style="display:none"><span style="flex:.3">2</span><span style="flex:3" id="sim-item2-name"></span><span style="flex:1">1 Session</span><span style="flex:1">350.00</span><span style="flex:.5">1</span></div>
+            <div class="dwtr sim-item-row" id="sim-row-3" style="display:none"><span style="flex:.3">3</span><span style="flex:3" id="sim-item3-name"></span><span style="flex:1">1 Pack</span><span style="flex:1">500.00</span><span style="flex:.5">1</span></div>
           </div>
-          <div style="font-size:.62rem;color:#94a3b8;margin-top:6px">© 2026 ArNova Solution</div>
+          <!-- Totals strip -->
+          <div id="sim-totals" style="display:none;display:none;margin-top:8px">
+            <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:8px 0">
+              <div class="dwfsf"><div class="dwfsfl">SUBTOTAL</div><div id="sim-subtotal">—</div></div>
+              <div class="dwfsf"><div class="dwfsfl">ADVANCE ADJ.</div><div style="color:#16a34a" id="sim-adv-val">—</div></div>
+              <div class="dwfsf"><div class="dwfsfl">PAYMENT MODE</div><div>Cash ▾</div></div>
+              <div class="dwnet" style="margin-left:auto">
+                <div class="dwnetl">NET PAYABLE</div>
+                <div class="dwnetv" id="sim-net">—</div>
+              </div>
+            </div>
+          </div>
+          <!-- Save flash -->
+          <div id="sim-saved-flash" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 16px;text-align:center;font-size:.82rem;color:#16a34a;font-weight:700;margin-top:8px">✅ Invoice Saved! PDF ready. Patient ledger updated. Due: ₹0</div>
         </div>
-      </div>
-    </div>
-    <!-- CATALOGUE -->
-    <div class="dpanel" id="tab-catalogue">
-      <div class="demo-label">Product Catalogue — add services &amp; prices once, they auto-fill in billing as you type</div>
-      <div class="dwin">
-        <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">THE PHYSIOREHAB — Billing</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
-        <div class="dwtopbar"><div class="dwapp">⬡ THE PHYSIOREHAB</div><div class="dwtabs"><span class="dwt">✦ New Invoice</span><span class="dwt">⊟ History</span><span class="dwt">👤 Patients</span><span class="dwt on">＋ Catalogue</span></div><div class="dwbrand">⚡ ArNova</div></div>
-        <div class="dwbody">
-          <div style="font-weight:700;font-size:.88rem;color:#1e293b;margin-bottom:3px">⬡ Product Catalogue</div>
-          <div style="font-size:.72rem;color:#64748b;margin-bottom:12px">Manage medicines &amp; products — they auto-fill in the billing form when you type.</div>
-          <div style="display:flex;gap:6px;margin-bottom:10px"><div class="dwf" style="flex:1;padding:5px 9px;color:#94a3b8;font-size:.72rem">🔍 Search by Product Name, category...</div><span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add</span><span class="dwabtn" style="background:#16a34a;color:#fff">✏ Edit</span><span class="dwabtn" style="background:#dc2626;color:#fff">🗑 Delete</span></div>
+
+        <!-- SCREEN 2: History -->
+        <div id="sim-screen-history" class="sim-screen" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="font-weight:700;font-size:.88rem;color:#1e293b">Invoice History</div>
+            <div style="background:#dbeafe;color:#1a56db;padding:2px 11px;border-radius:50px;font-size:.72rem;font-weight:600">₹ 8,570.00 | 4 records</div>
+            <div style="margin-left:auto"><span class="dwabtn" style="background:#16a34a;color:#fff">📊 Excel Export</span></div>
+          </div>
           <div class="dwtbl">
-            <div class="dwthead"><span style="flex:.4">ID</span><span style="flex:3">SERVICE / PRODUCT NAME</span><span style="flex:1">UNIT / PACK</span><span style="flex:1">PRICE (₹)</span><span style="flex:2">CATEGORY</span></div>
+            <div class="dwthead"><span style="flex:.5">INV</span><span style="flex:.8">DATE</span><span style="flex:2">PATIENT</span><span style="flex:1">MOBILE</span><span style="flex:.8">AMOUNT</span><span style="flex:1">ACTION</span></div>
+            <div class="dwtr" style="background:#f0fdf4"><span style="flex:.5;color:#1a56db;font-weight:600">IN-047</span><span style="flex:.8">11-03-2026</span><span style="flex:2;font-weight:600">Ravi Sharma</span><span style="flex:1">98765XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:700">₹1,050</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+            <div class="dwtr"><span style="flex:.5;color:#1a56db">IN-046</span><span style="flex:.8">09-03-2026</span><span style="flex:2">Arpit Kumar</span><span style="flex:1">98784XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:600">₹2,520</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+            <div class="dwtr"><span style="flex:.5;color:#1a56db">IN-045</span><span style="flex:.8">05-03-2026</span><span style="flex:2">Priya Mehta</span><span style="flex:1">96648XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:600">₹3,200</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+            <div class="dwtr"><span style="flex:.5;color:#1a56db">IN-044</span><span style="flex:.8">01-03-2026</span><span style="flex:2">Vinod Singh</span><span style="flex:1">96640XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:600">₹1,800</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+          </div>
+        </div>
+
+        <!-- SCREEN 3: Patients -->
+        <div id="sim-screen-patients" class="sim-screen" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="font-weight:700;font-size:.88rem;color:#1e293b">Patient Database</div>
+            <div style="background:#dbeafe;color:#1a56db;padding:2px 11px;border-radius:50px;font-size:.72rem;font-weight:600">4 patients</div>
+            <div style="margin-left:auto"><span class="dwabtn" style="background:#16a34a;color:#fff">📊 Export All</span></div>
+          </div>
+          <div class="dwtbl">
+            <div class="dwthead"><span style="flex:.6">ID</span><span style="flex:2">NAME</span><span style="flex:.5">AGE</span><span style="flex:1">MOBILE</span><span style="flex:.8">ADVANCE</span><span style="flex:.8">DUE</span><span style="flex:.6">INVOICES</span></div>
+            <div class="dwtr"><span style="flex:.6;color:#1a56db;font-weight:600">TPRC01</span><span style="flex:2;font-weight:500">Arpit Kumar</span><span style="flex:.5">23</span><span style="flex:1">9878XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:600">₹0</span><span style="flex:.8;color:#dc2626;font-weight:600">₹0</span><span style="flex:.6">12</span></div>
+            <div class="dwtr"><span style="flex:.6;color:#1a56db;font-weight:600">TPRC02</span><span style="flex:2;font-weight:500">Vinod Singh</span><span style="flex:.5">41</span><span style="flex:1">9664XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:600">₹200</span><span style="flex:.8;color:#dc2626;font-weight:600">₹0</span><span style="flex:.6">8</span></div>
+            <div class="dwtr"><span style="flex:.6;color:#1a56db;font-weight:600">TPRC03</span><span style="flex:2;font-weight:500">Priya Mehta</span><span style="flex:.5">35</span><span style="flex:1">9664XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:600">₹0</span><span style="flex:.8;color:#dc2626;font-weight:600">₹450</span><span style="flex:.6">5</span></div>
+            <div class="dwtr" style="background:#eff6ff"><span style="flex:.6;color:#1a56db;font-weight:700">TPRC04</span><span style="flex:2;font-weight:700">Ravi Sharma</span><span style="flex:.5">29</span><span style="flex:1">9876XXXXX</span><span style="flex:.8;color:#16a34a;font-weight:700">₹0</span><span style="flex:.8;color:#dc2626;font-weight:600">₹0</span><span style="flex:.6">1</span></div>
+          </div>
+        </div>
+
+        <!-- SCREEN 4: Catalogue -->
+        <div id="sim-screen-catalogue" class="sim-screen" style="display:none">
+          <div style="font-weight:700;font-size:.88rem;color:#1e293b;margin-bottom:4px">⬡ Product Catalogue</div>
+          <div style="font-size:.72rem;color:#64748b;margin-bottom:10px">Services &amp; prices saved here auto-fill when you type in billing.</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div class="dwf" style="flex:1;padding:5px 9px;color:#94a3b8;font-size:.72rem">🔍 Search by name...</div>
+            <span class="dwabtn" style="background:#1a56db;color:#fff">＋ Add</span>
+            <span class="dwabtn" style="background:#16a34a;color:#fff">✏ Edit</span>
+            <span class="dwabtn" style="background:#dc2626;color:#fff">🗑 Delete</span>
+          </div>
+          <div class="dwtbl">
+            <div class="dwthead"><span style="flex:.4">#</span><span style="flex:3">SERVICE / PRODUCT NAME</span><span style="flex:1">UNIT</span><span style="flex:1">PRICE (₹)</span><span style="flex:2">CATEGORY</span></div>
+            <div class="dwtr"><span style="flex:.4">1</span><span style="flex:3">Physiotherapy Session</span><span style="flex:1">1 Visit</span><span style="flex:1;color:#16a34a;font-weight:600">700.00</span><span style="flex:2">Physiotherapy</span></div>
             <div class="dwtr"><span style="flex:.4">2</span><span style="flex:3">Consultation</span><span style="flex:1">1 Session</span><span style="flex:1;color:#16a34a;font-weight:600">500.00</span><span style="flex:2">Consultation</span></div>
-            <div class="dwtr"><span style="flex:.4">3</span><span style="flex:3">Physiotherapy</span><span style="flex:1">1 Session</span><span style="flex:1;color:#16a34a;font-weight:600">700.00</span><span style="flex:2">Physiotherapy</span></div>
-            <div class="dwtr"><span style="flex:.4">4</span><span style="flex:3">Physiotherapy Package</span><span style="flex:1">1 Pack</span><span style="flex:1;color:#16a34a;font-weight:600">6000.00</span><span style="flex:2">Physiotherapy</span></div>
+            <div class="dwtr"><span style="flex:.4">3</span><span style="flex:3">Ultrasound Therapy</span><span style="flex:1">1 Session</span><span style="flex:1;color:#16a34a;font-weight:600">350.00</span><span style="flex:2">Therapy</span></div>
+            <div class="dwtr"><span style="flex:.4">4</span><span style="flex:3">Hot Pack Application</span><span style="flex:1">1 Session</span><span style="flex:1;color:#16a34a;font-weight:600">150.00</span><span style="flex:2">Therapy</span></div>
+            <div class="dwtr"><span style="flex:.4">5</span><span style="flex:3">Physiotherapy Package</span><span style="flex:1">1 Pack</span><span style="flex:1;color:#16a34a;font-weight:600">6000.00</span><span style="flex:2">Physiotherapy</span></div>
           </div>
-          <div style="font-size:.62rem;color:#94a3b8;margin-top:6px">© 2026 ArNova Solution</div>
         </div>
-      </div>
-    </div>
-    <!-- PDF -->
-    <div class="dpanel" id="tab-pdf">
-      <div class="demo-label">Generated PDF Invoice — professional A4 with clinic logo, itemised table, discount, Amount in Words</div>
-      <div class="dwin">
-        <div class="dwbar"><div class="dwd"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="dwtitle">Invoice Preview — IN-001.pdf</div><div class="dwbtns"><span>−</span><span>□</span><span>×</span></div></div>
-        <div class="pdf-wrap">
-          <div class="pdf-header">
-            <div><div class="pdf-clinic">THE PHYSIOREHAB</div><div style="font-size:.68rem;color:#374151;line-height:1.6;margin-top:3px">65, Udai Nagar-A, Nirman Nagar<br/>Near Mansarovar Metro Station<br/>Jaipur, Rajasthan - 302019</div></div>
-            <div class="pdf-logo">🏥</div>
-            <div class="pdf-dr"><strong>Dr. Upendra Agrawal (PT)</strong><br/>Mob.: 9828600634<br/>www.thephysiorehab.com</div>
+
+        <!-- SCREEN 5: History with highlighted row (before PDF) -->
+        <div id="sim-screen-history-pdf" class="sim-screen" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="font-weight:700;font-size:.88rem;color:#1e293b">Invoice History</div>
+            <div style="background:#dbeafe;color:#1a56db;padding:2px 11px;border-radius:50px;font-size:.72rem;font-weight:600">₹ 8,570.00 | 4 records</div>
+            <div style="margin-left:auto"><span class="dwabtn" style="background:#16a34a;color:#fff">📊 Excel Export</span></div>
           </div>
-          <div class="pdf-meta"><div><div>INVOICE NUMBER</div><div>IN-001</div></div><div><div>PATIENT ID</div><div>TPRC01</div></div><div><div>DATE</div><div>01-02-2026</div></div><div><div>SUBMITTED FOR</div><div>THE PHYSIOREHAB</div></div></div>
-          <div class="pdf-patient"><strong>Mr. Arpit Kumar</strong>, 23 yrs, Male, +91 9878675654, arpit@gmail.com, Address: Bharatpur, Raj</div>
-          <table class="pdf-tbl"><tr><th>#</th><th>DESCRIPTION</th><th style="text-align:right">RATE (₹)</th><th style="text-align:center">QTY</th><th style="text-align:center">DISCOUNT</th><th style="text-align:right">TOTAL (₹)</th></tr><tr><td>1</td><td>Physiotherapy Session</td><td style="text-align:right">₹700.00</td><td style="text-align:center">1</td><td style="text-align:center">0.00</td><td style="text-align:right">₹700.00</td></tr><tr><td>2</td><td>Physiotherapy Session</td><td style="text-align:right">₹700.00</td><td style="text-align:center">3</td><td style="text-align:center">0.00</td><td style="text-align:right">₹2100.00</td></tr></table>
-          <div class="pdf-bottom">
-            <div class="pdf-rcpt"><table class="pdf-rcpttbl"><tr><th>RECEIPT NO.</th><th>MODE</th><th>AMOUNT PAID</th><th>ADVANCE USED</th><th>DUE AMOUNT</th></tr><tr><td>RCT-001</td><td>Cash</td><td>₹2000.00</td><td>₹0.00</td><td>₹520.00</td></tr></table></div>
-            <div class="pdf-tots"><div class="pdf-tots-row"><span>Subtotal Total</span><span>₹2800.00</span></div><div class="pdf-tots-row" style="color:#dc2626"><span>Discount (10.0%)</span><span>−₹280.00</span></div><div class="pdf-net"><span>NET AMOUNT</span><span>₹2520.00</span></div><div class="pdf-adv"><span>Total Amount Received</span><span>₹2000.00</span></div><div class="pdf-tots-row" style="background:#fefce8;padding:3px 6px;color:#d97706"><span>Remaining Advance</span><span>₹0.00</span></div><div class="pdf-due"><span>Due Amount</span><span>₹520.00</span></div></div>
+          <div class="dwtbl">
+            <div class="dwthead"><span style="flex:.5">INV</span><span style="flex:.8">DATE</span><span style="flex:2">PATIENT</span><span style="flex:.8">AMOUNT</span><span style="flex:1">ACTION</span></div>
+            <div class="dwtr" style="background:#fffbeb;border-left:3px solid #f59e0b" id="sim-hist-highlight"><span style="flex:.5;color:#1a56db;font-weight:700">IN-047</span><span style="flex:.8">11-03-2026</span><span style="flex:2;font-weight:700">Ravi Sharma</span><span style="flex:.8;color:#16a34a;font-weight:700">₹1,050</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem" id="sim-pdf-btn">PDF ←</span><span style="background:#1a56db;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+            <div class="dwtr"><span style="flex:.5;color:#1a56db">IN-046</span><span style="flex:.8">09-03-2026</span><span style="flex:2">Arpit Kumar</span><span style="flex:.8;color:#16a34a">₹2,520</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
+            <div class="dwtr"><span style="flex:.5;color:#1a56db">IN-045</span><span style="flex:.8">05-03-2026</span><span style="flex:2">Priya Mehta</span><span style="flex:.8;color:#16a34a">₹3,200</span><span style="flex:1;display:flex;gap:3px"><span style="background:#f59e0b;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PDF</span><span style="background:#1a56db;color:#fff;padding:2px 6px;border-radius:3px;font-size:.62rem">PRINT</span></span></div>
           </div>
-          <div style="text-align:right;margin-top:16px;font-size:.66rem;color:#64748b"><span style="border-top:1px solid #9ca3af;display:inline-block;padding-top:4px;min-width:110px">Authorised Sign.</span></div>
         </div>
-      </div>
+
+        <!-- SCREEN 5b: PDF Preview -->
+        <div id="sim-screen-pdf" class="sim-screen" style="display:none">
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:16px 20px;font-size:.72rem;color:#111;max-width:520px;margin:0 auto">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;border-bottom:2px solid #1a237e;padding-bottom:8px">
+              <div><div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:900;color:#1a237e">THE PHYSIOREHAB</div><div style="font-size:.65rem;color:#555">Dr. Upendra Agrawal | Jaipur, Rajasthan</div><div style="font-size:.65rem;color:#555">Ph: +91 99293 21602</div></div>
+              <div style="text-align:right"><div style="font-size:.65rem;color:#555">Invoice No: <strong>IN-047</strong></div><div style="font-size:.65rem;color:#555">Date: 11-03-2026</div><div style="background:#1a237e;color:#fff;padding:2px 8px;border-radius:3px;font-size:.62rem;margin-top:4px">GST INVOICE</div></div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:5px 9px;margin-bottom:8px;font-size:.68rem"><strong>Patient:</strong> Ravi Sharma &nbsp;|&nbsp; Age: 29 &nbsp;|&nbsp; Mobile: 9876XXXXX</div>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:.68rem">
+              <thead><tr style="background:#1a237e;color:#fff"><th style="padding:4px 6px;text-align:left">Description</th><th style="padding:4px 6px">Qty</th><th style="padding:4px 6px">Rate</th><th style="padding:4px 6px">Amount</th></tr></thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:4px 6px">Physiotherapy Session</td><td style="padding:4px 6px;text-align:center">1</td><td style="padding:4px 6px;text-align:right">₹700</td><td style="padding:4px 6px;text-align:right">₹700</td></tr>
+                <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:4px 6px">Ultrasound Therapy</td><td style="padding:4px 6px;text-align:center">1</td><td style="padding:4px 6px;text-align:right">₹350</td><td style="padding:4px 6px;text-align:right">₹350</td></tr>
+                <tr><td style="padding:4px 6px">Hot Pack</td><td style="padding:4px 6px;text-align:center">1</td><td style="padding:4px 6px;text-align:right">₹500</td><td style="padding:4px 6px;text-align:right">₹500</td></tr>
+              </tbody>
+            </table>
+            <div style="display:flex;justify-content:flex-end">
+              <div style="min-width:180px;font-size:.68rem">
+                <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #f1f5f9"><span>Subtotal</span><span>₹1,550.00</span></div>
+                <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #f1f5f9;color:#16a34a"><span>Advance Adjusted</span><span>− ₹500.00</span></div>
+                <div style="display:flex;justify-content:space-between;padding:4px 6px;background:#1a237e;color:#fff;font-weight:700;border-radius:3px;margin-top:3px"><span>Net Payable</span><span>₹1,050.00</span></div>
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:.62rem;color:#666;font-style:italic">One Thousand Fifty Rupees Only</div>
+            <div style="margin-top:6px;font-size:.6rem;color:#94a3b8;border-top:1px dashed #e2e8f0;padding-top:5px">Thank you for visiting The PhysioRehab &nbsp;·&nbsp; Powered by ScreenWise Billing — ArNova Solutions</div>
+          </div>
+        </div>
+
+      </div><!-- /body -->
+    </div><!-- /sim window -->
+
+    <!-- Progress dots -->
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:16px" id="sim-dots">
+      <div class="sim-dot active-dot"></div>
+      <div class="sim-dot"></div>
+      <div class="sim-dot"></div>
+      <div class="sim-dot"></div>
+      <div class="sim-dot"></div>
+      <div class="sim-dot"></div>
     </div>
-  </div>
+    <div style="text-align:center;margin-top:8px;font-size:.78rem;color:rgba(255,255,255,.3)" id="sim-step-label">Step 1 of 6 — Filling patient details</div>
+
+  </div><!-- /demo-wrap -->
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="sec-pad" id="how">
-  <div class="how-inner">
-    <div class="reveal">
-      <div class="slabel">How It Works</div>
-      <div class="stitle">From Walk-in to Invoice in 30 Seconds</div>
-      <div class="steps" style="margin-top:30px">
-        <div class="step"><div class="stepn">1</div><div><div class="steptitle">Search or Add Customer</div><div class="stepdesc">Type name, mobile, or ID — autocomplete finds them instantly. New customer? Auto-creates their record from the billing form itself.</div></div></div>
-        <div class="step"><div class="stepn">2</div><div><div class="steptitle">Add Services &amp; Products</div><div class="stepdesc">Pick from your catalogue. Add quantities, apply discount. Previous advance or due balance shows automatically — no manual lookup.</div></div></div>
-        <div class="step"><div class="stepn">3</div><div><div class="steptitle">Balance Auto-Settles</div><div class="stepdesc">Any advance is deducted. Any due is added. Net payable calculates instantly. Customer ledger updates in real time.</div></div></div>
-        <div class="step"><div class="stepn">4</div><div><div class="steptitle">Print or Save PDF</div><div class="stepdesc">One click — professional invoice with your clinic logo, doctor name, and Amount in Words. Print directly or save as PDF.</div></div></div>
-      </div>
-    </div>
-    <div class="reveal">
-      <div class="how-vis">
-        <div class="mini-inv">
-          <div class="mini-clinic">Your Business Name</div>
-          <div class="mini-sub">Dr. / Owner Name | Contact<br/>Invoice No: IN-042 | Date: 04-03-2026</div>
-          <div class="mini-row"><span>Service / Product ×2</span><span>₹1,000</span></div>
-          <div class="mini-row"><span>Service / Product ×1</span><span>₹350</span></div>
-          <div class="mini-row"><span>Service / Product ×1</span><span>₹150</span></div>
-          <div class="mini-row" style="color:rgba(255,255,255,.25);font-size:.66rem"><span>Subtotal</span><span>₹1,500</span></div>
-          <div class="mini-row" style="color:var(--green);font-size:.66rem"><span>Advance Adjusted</span><span>− ₹500</span></div>
-          <div class="mini-total"><span>Net Payable</span><span class="gn">₹1,000</span></div>
-          <div class="mini-words">One Thousand Rupees Only</div>
-        </div>
-        <div class="tags">
-          <span class="tag g">✓ Fully Offline</span>
-          <span class="tag g">✓ No Monthly Fee</span>
-          <span class="tag b">PDF + Print</span>
-          <span class="tag b">Auto Balance</span>
-          <span class="tag">Windows EXE</span>
-          <span class="tag">Excel Export</span>
-          <span class="tag">Any Business</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPARISON TABLE -->
 <section class="sec-pad compare" id="compare">
   <div class="compare-inner">
     <div class="compare-hdr reveal">
@@ -705,6 +964,99 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
           <tr><td>5-Year Total Cost</td><td class="yes hl-col" style="color:#10b981;font-weight:700">₹14,000</td><td class="maybe">Time cost</td><td class="maybe">Time cost</td><td class="no" style="color:#ef4444;font-weight:700">₹1.2L – ₹3L</td></tr>
         </tbody>
       </table>
+    </div>
+
+  <!-- PAYMENT METHODS -->
+  <div class="payment-methods reveal">
+    <span class="pay-label">Accepted Payment:</span>
+    <span class="pay-pill">&#x1F4B3; UPI (GPay / PhonePe / Paytm)</span>
+    <span class="pay-pill">&#x1F3E6; Bank Transfer (NEFT / IMPS)</span>
+    <span class="pay-pill">&#x1F4B5; Cash</span>
+  </div>
+
+  <!-- SATISFACTION GUARANTEE -->
+  <div class="reveal">
+    <div class="guarantee-strip">
+      <div class="g-shield">&#x1F6E1;&#xFE0F;</div>
+      <div>
+        <div class="g-title">Satisfaction Guaranteed — We don't take your money unless you're happy</div>
+        <div class="g-desc">We offer a free demo before any payment. We set up the software, show you how it works, and only proceed when you are fully satisfied. If the software has a bug after purchase, we fix it for free during your support period — no questions asked.</div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section class="sec-pad" id="roi-calc" style="background:linear-gradient(180deg,transparent,rgba(245,158,11,.03),transparent)">
+  <div style="max-width:820px;margin:0 auto">
+    <div class="reveal" style="text-align:center;margin-bottom:44px">
+      <div class="slabel">Calculate Your Savings</div>
+      <div class="stitle">How Much Are You Losing Right Now?</div>
+      <p class="ssub" style="margin:10px auto 0">Most clinic owners are shocked when they see the real number.</p>
+    </div>
+    <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px 44px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px">
+        <div>
+          <label style="font-size:.8rem;color:rgba(255,255,255,.45);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">Monthly SaaS/subscription fee you currently pay</label>
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 16px">
+            <span style="color:#60a5fa;font-family:'Syne',sans-serif;font-weight:700">₹</span>
+            <input id="roi-sub" type="number" value="3500" min="0" max="99999" oninput="calcROI()" style="background:none;border:none;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;width:100%;outline:none"/>
+          </div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,.28);margin-top:5px">Vyapar charges ₹3,399/yr = ₹283/mo minimum. Many clinics pay ₹2,000–5,000/mo.</div>
+        </div>
+        <div>
+          <label style="font-size:.8rem;color:rgba(255,255,255,.45);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">Monthly dues/advances you currently lose track of</label>
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 16px">
+            <span style="color:#60a5fa;font-family:'Syne',sans-serif;font-weight:700">₹</span>
+            <input id="roi-leak" type="number" value="2000" min="0" max="99999" oninput="calcROI()" style="background:none;border:none;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;width:100%;outline:none"/>
+          </div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,.28);margin-top:5px">Patient who paid short, advance you forgot — most clinics lose ₹1,500–3,000/month.</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(26,86,219,.15),rgba(26,86,219,.05));border:1px solid rgba(26,86,219,.35);border-radius:14px;padding:28px 32px;text-align:center">
+        <div style="font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:6px">You are currently losing approximately</div>
+        <div id="roi-monthly" style="font-family:'Syne',sans-serif;font-weight:800;font-size:2.6rem;color:#60a5fa;line-height:1">₹5,500<span style="font-size:1rem;color:rgba(255,255,255,.4)">/month</span></div>
+        <div id="roi-yearly" style="font-size:1rem;color:#fcd34d;font-family:'Syne',sans-serif;font-weight:700;margin-top:6px">= ₹66,000 every year</div>
+        <div style="margin-top:16px;font-size:.85rem;color:rgba(255,255,255,.5);line-height:1.65">ScreenWise costs <strong style="color:#6ee7b7">₹14,000 once</strong> — you recover the full cost in <strong id="roi-payback" style="color:#6ee7b7">less than 3 months</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOT VYAPAR / TALLY -->
+<section class="sec-pad" id="why-not" style="background:linear-gradient(180deg,transparent,rgba(239,68,68,.03),transparent)">
+  <div style="max-width:860px;margin:0 auto">
+    <div class="reveal" style="text-align:center;margin-bottom:44px">
+      <div class="slabel">Honest Comparison</div>
+      <div class="stitle">Why Not Just Use Vyapar or Tally?</div>
+      <p class="ssub" style="margin:10px auto 0">Good question. Here's the real difference — no fluff.</p>
+    </div>
+    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.18);border-radius:14px;padding:28px 26px">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#fca5a5;margin-bottom:20px;display:flex;align-items:center;gap:9px">⚠️ Vyapar / Cloud Tools</div>
+        <div style="display:flex;flex-direction:column;gap:13px">
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#f87171;flex-shrink:0">✗</span><span>Subscription forever — ₹3,400–6,000/year, every year, with no end</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#f87171;flex-shrink:0">✗</span><span>Your patient data sits on their servers — not your computer</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#f87171;flex-shrink:0">✗</span><span>Stops working if internet goes down or they shut down</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#f87171;flex-shrink:0">✗</span><span>Built for all businesses — not clinic-specific. You pay for features you'll never use.</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#f87171;flex-shrink:0">✗</span><span>Support is a call centre — not the developer who built your software</span></div>
+        </div>
+      </div>
+      <div style="background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.22);border-radius:14px;padding:28px 26px">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#6ee7b7;margin-bottom:20px;display:flex;align-items:center;gap:9px">✅ ScreenWise Billing</div>
+        <div style="display:flex;flex-direction:column;gap:13px">
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#6ee7b7;flex-shrink:0">✓</span><span>₹14,000 once. You own it forever. No yearly renewal.</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#6ee7b7;flex-shrink:0">✓</span><span>All data is on your PC — 100% private, nobody else can see it</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#6ee7b7;flex-shrink:0">✓</span><span>Works completely offline — no internet, no dependency, no downtime</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#6ee7b7;flex-shrink:0">✓</span><span>Built specifically for clinics and small Indian businesses — nothing wasted</span></div>
+          <div style="font-size:.84rem;color:rgba(255,255,255,.5);display:flex;gap:10px"><span style="color:#6ee7b7;flex-shrink:0">✓</span><span>WhatsApp the developer directly — the person who built and knows every line</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:20px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22);border-radius:12px;padding:18px 26px;display:flex;align-items:center;gap:14px">
+      <span style="font-size:1.5rem;flex-shrink:0">💡</span>
+      <div style="font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.65"><strong style="color:#fcd34d">The honest answer:</strong> Vyapar is great if you need nationwide GST filing, mobile app, or manage multiple branches. If you run a single clinic or shop and need reliable daily billing with full data privacy and no monthly bills — ScreenWise is built exactly for you.</div>
     </div>
   </div>
 </section>
@@ -746,7 +1098,7 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
   </div>
   <div class="pcards reveal">
     <div class="pcard">
-      <div class="ptier">Referred Client</div>
+      <div class="ptier">Friend Referral</div>
       <div class="pamt"><span class="cur">₹</span>12,000</div>
       <div class="pnote">One-time · Lifetime license · 1 PC</div>
       <ul class="pitems">
@@ -757,7 +1109,8 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
         <li class="off">3-month extended support</li>
         <li class="off">1 hr staff training session</li>
       </ul>
-      <a href="https://wa.me/919878675654" class="pbtn out" target="_blank">WhatsApp Us</a>
+      <a href="https://wa.me/919929321602?text=Hi%2C%20I%20was%20referred%20by%20a%20friend%20for%20ScreenWise%20Billing" class="pbtn out" target="_blank">WhatsApp Us</a>
+      <div class="pcard-note">💬 How to claim: WhatsApp us and mention your friend's name who referred you. We'll confirm and apply the ₹2,000 discount instantly.</div>
     </div>
     <div class="pcard hot">
       <div class="pbadge">⭐ Most Popular</div>
@@ -772,7 +1125,7 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
         <li>1 hr staff training session</li>
         <li>Free bug fixes included</li>
       </ul>
-      <a href="https://wa.me/919878675654" class="pbtn sol" target="_blank">Get Started →</a>
+      <a href="https://wa.me/919929321602?text=Hi%2C%20I%27d%20like%20to%20buy%20ScreenWise%20Billing%20for%20my%20business" class="pbtn sol" target="_blank">Get Started →</a>
     </div>
     <div class="pcard">
       <div class="ptier">Annual Support (AMC)</div>
@@ -785,26 +1138,62 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
         <li>Priority response</li>
         <li class="off">New features (quoted separately)</li>
       </ul>
-      <a href="https://wa.me/919878675654" class="pbtn out" target="_blank">WhatsApp Us</a>
+      <a href="https://wa.me/919929321602?text=Hi%2C%20I%20want%20to%20know%20more%20about%20ScreenWise%20Billing" class="pbtn out" target="_blank">WhatsApp Us</a>
     </div>
   </div>
 </section>
 
-<!-- URGENCY -->
-<section class="sec-pad" id="urgency">
-  <div class="urgency reveal">
-    <div class="urgency-offer">⚡ Free Demo Available — See it working on your PC before you pay</div>
-    <div class="urgency-title">Every Day Without This Software<br/>Is Money Left on the Table</div>
-    <div class="urgency-sub">Missed dues, manual billing errors, hours wasted on paper registers — it all adds up. One WhatsApp message and we'll set up a free demo at your clinic, same day.</div>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-      <a href="https://wa.me/919878675654" class="btn-wa" target="_blank">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Book Free Demo Now
-      </a>
-      <a href="mailto:official.abhishant.kumar@gmail.com" class="btn-outline">✉️ Email Us Instead</a>
+
+
+<!-- FOUNDER -->
+<!-- AFTER PURCHASE -->
+<section class="sec-pad" id="after-purchase">
+  <div class="after-wrap">
+    <div class="after-hdr reveal">
+      <div class="slabel">After Purchase</div>
+      <div class="stitle">What Happens After You Contact Us</div>
+      <p class="ssub" style="margin:10px auto 0">No waiting, no confusion. Here's exactly what to expect — from first WhatsApp to your software running live.</p>
+    </div>
+    <div class="after-steps reveal">
+      <div class="after-step">
+        <div class="after-num">1</div>
+        <div class="after-title">You WhatsApp Us</div>
+        <div class="after-desc">Send us a message — we reply within 2 hours (Mon–Sat). Tell us about your business and we'll schedule a free demo.</div>
+      </div>
+      <div class="after-step">
+        <div class="after-num">2</div>
+        <div class="after-title">Free Live Demo</div>
+        <div class="after-desc">We show you the full software live via screen share or in-person at your clinic. Ask anything. Zero obligation to buy.</div>
+      </div>
+      <div class="after-step">
+        <div class="after-num">3</div>
+        <div class="after-title">Custom Branding Setup</div>
+        <div class="after-desc">Once you're happy and pay, we set up your clinic name, logo, doctor name, and address inside the software — same day.</div>
+      </div>
+      <div class="after-step">
+        <div class="after-num">4</div>
+        <div class="after-title">Installed & You're Live</div>
+        <div class="after-desc">We deliver your personalised EXE, install it on your PC, and train your staff. You start billing professionally from day one.</div>
+      </div>
+    </div>
+    <div class="guarantee-strip reveal">
+      <div class="g-shield">🛡️</div>
+      <div>
+        <div class="g-title">Satisfaction Guaranteed — We don't take your money unless you're happy</div>
+        <div class="g-desc">Free demo before any payment. We set up the software, show you everything, and only proceed when you're fully satisfied. If anything breaks after purchase, we fix it free during your support period — no questions asked.</div>
+      </div>
+    </div>
+    <div class="payment-methods reveal">
+      <div class="pay-label">Payment accepted via:</div>
+      <div class="pay-pill">📱 UPI / GPay</div>
+      <div class="pay-pill">📱 PhonePe</div>
+      <div class="pay-pill">📱 Paytm</div>
+      <div class="pay-pill">🏦 Bank Transfer</div>
+      <div class="pay-pill">💵 Cash</div>
     </div>
   </div>
 </section>
+
 
 <!-- FAQ -->
 <section class="sec-pad faq" id="faq">
@@ -818,6 +1207,18 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
       <div class="faq-item open">
         <div class="faq-q" onclick="toggleFaq(this)">Does it work without internet? <i class="faq-icon">+</i></div>
         <div class="faq-a"><p>Yes, 100%. ScreenWise Billing is a completely offline Windows application. Once installed, it never needs internet to work. Your data never leaves your computer.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Does it generate GST-compliant invoices? <i class="faq-icon">+</i></div>
+        <div class="faq-a"><p>Yes. ScreenWise generates GST-ready invoices with GSTIN, CGST/SGST breakdowns, HSN/SAC codes, and all required fields. Your accountant will receive exactly what they need for tax filing — no extra work.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I see the software before paying? <i class="faq-icon">+</i></div>
+        <div class="faq-a"><p>Absolutely. WhatsApp us and we will set up a free demo — either a screen share session or we can come to your clinic directly. No payment is needed until you are fully satisfied and ready to proceed.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How do I pay? What payment methods are accepted? <i class="faq-icon">+</i></div>
+        <div class="faq-a"><p>We accept UPI (GPay, PhonePe, Paytm), bank transfer (NEFT/IMPS), and cash. Payment is made only after the demo — once you have seen the software working and you are happy to proceed.</p></div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Can I use it on multiple computers? <i class="faq-icon">+</i></div>
@@ -858,9 +1259,9 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
     <div class="stitle">Ready to Get Started?</div>
     <p class="csub">WhatsApp us for a free demo — we'll show you the full software live, answer all your questions, and set it up the same day once you're ready.</p>
     <div class="cbtns">
-      <a href="https://wa.me/919878675654" class="btnwa2" target="_blank">
+      <a href="https://wa.me/919929321602" class="btnwa2" target="_blank">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        +91 99293 21602
+        WhatsApp Us
       </a>
       <a href="mailto:official.abhishant.kumar@gmail.com" class="btnem">✉️</a>
     </div>
@@ -874,27 +1275,216 @@ footer{padding:28px 48px;border-top:1px solid rgba(255,255,255,.05);display:flex
 </section>
 
 <footer>
-  <div class="fbrand">ArNova Solution — ScreenWise Billing Software</div>
-  <div class="fnote">© 2026 ArNova Solution. All rights reserved. Made for Indian businesses.</div>
+  <div class="fbrand">ArNova Solutions — ScreenWise Billing Software</div>
+  <div class="fnote">© 2026 ArNova Solutions · Made for Indian businesses · Jaipur, Rajasthan</div>
 </footer>
 
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/919929321602?text=Hi%2C%20I%20want%20a%20free%20demo%20of%20ScreenWise%20Billing" target="_blank" style="position:fixed;bottom:24px;right:24px;z-index:999;background:#25d366;color:#fff;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.5);transition:transform .2s;text-decoration:none" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function calcROI(){
+  var sub=parseFloat(document.getElementById('roi-sub').value)||0;
+  var leak=parseFloat(document.getElementById('roi-leak').value)||0;
+  var monthly=sub+leak;
+  var yearly=monthly*12;
+  document.getElementById('roi-monthly').innerHTML='&#x20B9;'+monthly.toLocaleString('en-IN')+'<span style="font-size:1rem;color:rgba(255,255,255,.4)">/month</span>';
+  document.getElementById('roi-yearly').textContent='= \u20B9'+yearly.toLocaleString('en-IN')+' every year';
+  var months=monthly>0?Math.ceil(14000/monthly):0;
+  document.getElementById('roi-payback').textContent=months>0?'in '+months+' month'+(months>1?'s':''):'immediately';
+}
+</script>
+
 <script>
-function showTab(btn,id){
-  document.querySelectorAll('.dpanel').forEach(function(p){p.classList.remove('on')});
-  document.querySelectorAll('.dtab').forEach(function(t){t.classList.remove('on')});
-  document.getElementById('tab-'+id).classList.add('on');
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); observer.unobserve(e.target); } });
+}, {threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Static tab switcher
+function showTab(btn, id){
+  document.querySelectorAll('.dtab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.dpanel').forEach(p => p.classList.remove('on'));
   btn.classList.add('on');
+  document.getElementById('tab-'+id).classList.add('on');
 }
+
+// FAQ accordion
 function toggleFaq(el){
-  var item=el.parentElement;
-  var wasOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open')});
-  if(!wasOpen) item.classList.add('open');
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
 }
-var obs=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis')});
-},{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+
+// ── BILLING SIMULATION ──
+var simSteps = [
+  'Step 1 of 6 — Filling patient details…',
+  'Step 2 of 6 — Adding bill items…',
+  'Step 3 of 6 — Auto advance settlement & save…',
+  'Step 4 of 6 — Browsing catalogue…',
+  'Step 5 of 6 — Patient database…',
+  'Step 6 of 6 — History → PDF invoice'
+];
+
+function setDot(i){
+  document.querySelectorAll('.sim-dot').forEach(function(d,j){
+    d.classList.toggle('active-dot', j===i);
+  });
+}
+
+function setSimTab(name){
+  var tabs = document.querySelectorAll('.sim-tab');
+  var map = {billing:0, history:1, patients:2, catalogue:3, pdf:1, 'history-pdf':1};
+  tabs.forEach(function(t){ t.classList.remove('active-tab'); });
+  if(map[name] !== undefined) tabs[map[name]].classList.add('active-tab');
+}
+
+function showScreen(name){
+  document.querySelectorAll('.sim-screen').forEach(function(s){ s.style.display='none'; });
+  var el = document.getElementById('sim-screen-'+name);
+  if(el) el.style.display='block';
+  setSimTab(name);
+}
+
+function typeText(elId, text, speed, cb){
+  var el = document.getElementById(elId);
+  if(!el){ if(cb) cb(); return; }
+  el.innerHTML = '';
+  var i = 0;
+  (function next(){
+    if(i < text.length){
+      el.innerHTML = text.slice(0,++i) + '<span class="sim-cursor">|</span>';
+      setTimeout(next, speed);
+    } else {
+      el.innerHTML = text;
+      if(cb) cb();
+    }
+  })();
+}
+
+function runSim(){
+  showScreen('billing');
+  setDot(0);
+  document.getElementById('sim-step-label').textContent = simSteps[0];
+  document.getElementById('sf-id').textContent = '—';
+  document.getElementById('sf-id').style.color = '#94a3b8';
+  document.getElementById('sf-name').innerHTML = '<span class="sim-cursor">|</span>';
+  document.getElementById('sf-age').textContent = '—';
+  document.getElementById('sf-age').style.color = '#94a3b8';
+  document.getElementById('sf-mobile').textContent = '—';
+  document.getElementById('sf-mobile').style.color = '#94a3b8';
+  document.getElementById('sim-adv-badge').style.display = 'none';
+  document.getElementById('sim-row-1').style.display = 'none';
+  document.getElementById('sim-row-2').style.display = 'none';
+  document.getElementById('sim-row-3').style.display = 'none';
+  document.getElementById('sim-totals').style.display = 'none';
+  document.getElementById('sim-saved-flash').style.display = 'none';
+  var btn = document.getElementById('sim-save-btn');
+  btn.style.background = '#16a34a'; btn.textContent = '✓ Save';
+
+  // STEP 1: type name
+  setTimeout(function(){
+    typeText('sf-name','Ravi S',60,function(){
+      setTimeout(function(){
+        document.getElementById('sim-dropdown').style.display = 'block';
+        setTimeout(function(){
+          document.getElementById('sim-dropdown').style.display = 'none';
+          document.getElementById('sf-name').textContent = 'Ravi Sharma';
+          document.getElementById('sf-id').textContent = 'TPRC04';
+          document.getElementById('sf-id').style.color = '#1a56db';
+          document.getElementById('sf-age').textContent = '29';
+          document.getElementById('sf-age').style.color = '#1e293b';
+          document.getElementById('sf-mobile').textContent = '9876XXXXX';
+          document.getElementById('sf-mobile').style.color = '#1e293b';
+          setTimeout(function(){
+            document.getElementById('sim-adv-badge').style.display = 'block';
+
+            // STEP 2: add items
+            setTimeout(function(){
+              setDot(1);
+              document.getElementById('sim-step-label').textContent = simSteps[1];
+              document.getElementById('sim-row-1').style.display = 'flex';
+              document.getElementById('sim-item1-name').textContent = '';
+              typeText('sim-item1-name','Physiotherapy Session',40,function(){
+                setTimeout(function(){
+                  document.getElementById('sim-row-2').style.display = 'flex';
+                  document.getElementById('sim-item2-name').textContent = '';
+                  typeText('sim-item2-name','Ultrasound Therapy',40,function(){
+                    setTimeout(function(){
+                      document.getElementById('sim-row-3').style.display = 'flex';
+                      document.getElementById('sim-item3-name').textContent = '';
+                      typeText('sim-item3-name','Hot Pack',40,function(){
+
+                        // STEP 3: totals + save
+                        setTimeout(function(){
+                          setDot(2);
+                          document.getElementById('sim-step-label').textContent = simSteps[2];
+                          document.getElementById('sim-totals').style.display = 'block';
+                          document.getElementById('sim-subtotal').textContent = '₹1,550.00';
+                          document.getElementById('sim-adv-val').textContent = '− ₹500.00';
+                          document.getElementById('sim-net').textContent = '₹1,050.00';
+                          setTimeout(function(){
+                            btn.style.background = '#064e3b'; btn.textContent = '✓ Saving…';
+                            setTimeout(function(){
+                              btn.style.background = '#16a34a'; btn.textContent = '✓ Saved!';
+                              document.getElementById('sim-saved-flash').style.display = 'block';
+
+                              // STEP 4: Catalogue
+                              setTimeout(function(){
+                                setDot(3);
+                                document.getElementById('sim-step-label').textContent = simSteps[3];
+                                showScreen('catalogue');
+
+                                // STEP 5: Patients
+                                setTimeout(function(){
+                                  setDot(4);
+                                  document.getElementById('sim-step-label').textContent = simSteps[4];
+                                  showScreen('patients');
+
+                                  // STEP 6: History → click PDF → open PDF
+                                  setTimeout(function(){
+                                    setDot(5);
+                                    document.getElementById('sim-step-label').textContent = simSteps[5];
+                                    showScreen('history-pdf');
+                                    setTimeout(function(){
+                                      var pdfBtn = document.getElementById('sim-pdf-btn');
+                                      if(pdfBtn){ pdfBtn.style.background='#d97706'; pdfBtn.textContent='PDF ✓'; }
+                                      setTimeout(function(){
+                                        showScreen('pdf');
+                                        setTimeout(function(){ runSim(); }, 4000);
+                                      }, 800);
+                                    }, 1800);
+                                  }, 3000);
+                                }, 3000);
+                              }, 2000);
+                            }, 700);
+                          }, 1500);
+                        }, 500);
+                      });
+                    }, 400);
+                  });
+                }, 400);
+              });
+            }, 1000);
+          }, 600);
+        }, 900);
+      }, 500);
+    });
+  }, 800);
+}
+
+var simStarted = false;
+var simObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting && !simStarted){ simStarted=true; setTimeout(runSim,600); }
+  });
+},{threshold:0.3});
+var simEl = document.getElementById('screenshots');
+if(simEl) simObs.observe(simEl);
 </script>
 </body>
 </html>
